@@ -1,0 +1,58 @@
+================================================================
+[증거] 과제 명세와 제공 앱의 실제 요구사항 차이 (재현)
+================================================================
+
+아래 두 실행은 '앱이 무엇을 요구하는지' 확인하기 위한 것으로,
+이미 정상 기동해 15034 를 점유 중인 인스턴스와는 별개로 실행한 것이다.
+(그래서 [4/5] 포트 검사는 당연히 FAIL 이며, 확인 대상은 [2/5], [3/5] 이다)
+
+----------------------------------------------------------------
+케이스 1) AGENT_KEY_PATH 를 과제 문서대로 '파일 경로'로 지정한 경우
+----------------------------------------------------------------
+$ AGENT_KEY_PATH=$AGENT_HOME/api_keys/t_secret.key <앱 실행>
+>>> Starting Agent Boot Sequence...
+[1/5] Checking User Account               [OK]
+   ... Running as service user 'agent-admin' (uid=1000)
+[2/5] Verifying Environment Variables     [FAIL]
+   >>> Key Path Mismatch. Expected: /home/agent-admin/agent-app/api_keys
+[3/5] Checking Required Files             [FAIL]
+
+  => 앱은 AGENT_KEY_PATH 를 '키 디렉토리 경로'로 검증한다.
+
+----------------------------------------------------------------
+케이스 2) 키 디렉토리에 t_secret.key 만 있고 secret.key 가 없는 경우
+----------------------------------------------------------------
+$ ls $AGENT_HOME/api_keys
+t_secret.key
+$ <앱 실행>
+>>> Starting Agent Boot Sequence...
+[1/5] Checking User Account               [OK]
+   ... Running as service user 'agent-admin' (uid=1000)
+[2/5] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/5] Checking Required Files             [FAIL]
+   >>> Missing File: secret.key
+
+  => 앱이 찾는 파일명은 t_secret.key 가 아니라 secret.key 다.
+
+----------------------------------------------------------------
+대응) t_secret.key 를 실제 키로 두고 secret.key 를 심볼릭 링크로 연결
+----------------------------------------------------------------
+$ ls -l $AGENT_HOME/api_keys
+total 4
+lrwxrwxrwx  1 agent-admin agent-core 12 Aug 22 18:01 secret.key -> t_secret.key
+-rw-r-----+ 1 agent-admin agent-core 19 Aug 22 18:01 t_secret.key
+
+$ <앱 정상 기동 시 Boot Sequence> (evidence/05_app_boot.txt 와 동일)
+>>> Starting Agent Boot Sequence...
+[1/5] Checking User Account               [OK]
+   ... Running as service user 'agent-admin' (uid=1000)
+[2/5] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/5] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/5] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/5] Verifying Log Permission            [OK]
+   ... Log directory is writable: /var/log/agent-app
+------------------------------------------------------------

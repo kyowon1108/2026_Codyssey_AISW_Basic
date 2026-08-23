@@ -1,0 +1,306 @@
+
+
+############################################################
+# 01_ssh.sh
+############################################################
+
+===== SSH 설정 변경 =====
+[*] 원본 백업 생성: /etc/ssh/sshd_config.orig
+[*] Port 20022
+[*] PermitRootLogin no
+[*] sshd 설정 문법 검증
+[OK] 문법 정상
+[*] sshd 재시작
+
+===== 검증 결과 =====
+--- sshd_config (Port / PermitRootLogin) ---
+14:Port 20022
+33:PermitRootLogin no
+
+--- sshd 리슨 상태 (ss -tulnp) ---
+tcp   LISTEN 0      128          0.0.0.0:20022      0.0.0.0:*    users:(("sshd",pid=43,fd=3))
+tcp   LISTEN 0      128             [::]:20022         [::]:*    users:(("sshd",pid=43,fd=4))
+
+[OK] TCP 20022 리슨 확인
+[OK] 22 번 포트 리슨 없음
+
+
+############################################################
+# 02_firewall.sh
+############################################################
+
+===== UFW 방화벽 설정 =====
+[*] 기존 규칙 초기화
+[*] 기본 정책: incoming deny / outgoing allow
+[*] 허용 규칙 추가: 20022/tcp (SSH), 15034/tcp (APP)
+[*] 방화벽 활성화
+
+===== monitor.sh 용 최소 권한 sudo 규칙 =====
+/etc/sudoers.d/agent-monitor: parsed OK
+[*] /etc/sudoers.d/agent-monitor 작성 (%agent-core -> ufw status 만 허용)
+
+===== 검증 결과 =====
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+20022/tcp                  ALLOW IN    Anywhere                   # SSH (changed port)
+15034/tcp                  ALLOW IN    Anywhere                   # Agent APP
+20022/tcp (v6)             ALLOW IN    Anywhere (v6)              # SSH (changed port)
+15034/tcp (v6)             ALLOW IN    Anywhere (v6)              # Agent APP
+
+
+[OK] 22/tcp 허용 규칙 없음
+[OK] 20022/tcp 허용 확인
+[OK] 15034/tcp 허용 확인
+허용된 인바운드 포트: 15034/tcp 20022/tcp 
+
+
+############################################################
+# 03_users_groups.sh
+############################################################
+
+===== 그룹 생성 =====
+[OK] 그룹 생성: agent-common
+[OK] 그룹 생성: agent-core
+
+===== 계정 생성 =====
+[OK] 계정 생성: agent-admin
+[OK] 계정 생성: agent-dev
+[OK] 계정 생성: agent-test
+
+===== 그룹 멤버십 부여 =====
+[OK] 멤버십 설정 완료
+[*] 홈 디렉토리 통과 권한 확인: /home/agent-admin -> 755
+
+===== 검증 결과 =====
+--- id ---
+uid=1000(agent-admin) gid=1002(agent-admin) groups=1002(agent-admin),1000(agent-common),1001(agent-core)
+uid=1001(agent-dev) gid=1003(agent-dev) groups=1003(agent-dev),1000(agent-common),1001(agent-core)
+uid=1002(agent-test) gid=1004(agent-test) groups=1004(agent-test),1000(agent-common)
+
+--- getent group ---
+agent-common:x:1000:agent-admin,agent-dev,agent-test
+agent-core:x:1001:agent-admin,agent-dev
+
+[OK] agent-test 는 agent-core 에 포함되지 않음 (최소 권한 준수)
+
+
+############################################################
+# 04_dirs_acl.sh
+############################################################
+
+===== 디렉토리 생성 =====
+[OK] 생성 완료
+
+===== 소유권 / 권한 설정 =====
+[*] /home/agent-admin/agent-app -> agent-admin:agent-common 750
+[*] /home/agent-admin/agent-app/upload_files -> agent-admin:agent-common 2770
+[*] /home/agent-admin/agent-app/api_keys -> agent-admin:agent-core 2770
+[*] /home/agent-admin/agent-app/bin -> agent-dev:agent-core 750
+[*] /var/log/agent-app -> agent-admin:agent-core 2770
+
+===== ACL 설정 =====
+[*] /home/agent-admin/agent-app/upload_files: g:agent-common:rwx (+default)
+[*] /home/agent-admin/agent-app/api_keys: g:agent-core:rwx (+default)
+[*] /var/log/agent-app: g:agent-core:rwx (+default)
+
+===== 검증 결과 - 소유권/권한 =====
+drwxr-x---  5 agent-admin agent-common 4096 Aug 22 18:01 /home/agent-admin/agent-app
+drwxrws---+ 2 agent-admin agent-core   4096 Aug 22 18:01 /home/agent-admin/agent-app/api_keys
+drwxr-x---  2 agent-dev   agent-core   4096 Aug 22 18:01 /home/agent-admin/agent-app/bin
+drwxrws---+ 2 agent-admin agent-common 4096 Aug 22 18:01 /home/agent-admin/agent-app/upload_files
+drwxrws---+ 2 agent-admin agent-core   4096 Aug 22 18:01 /var/log/agent-app
+
+===== 검증 결과 - getfacl =====
+# file: /home/agent-admin/agent-app/upload_files
+# owner: agent-admin
+# group: agent-common
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-common:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-common:rwx
+default:mask::rwx
+default:other::---
+
+
+# file: /home/agent-admin/agent-app/api_keys
+# owner: agent-admin
+# group: agent-core
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-core:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-core:rwx
+default:mask::rwx
+default:other::---
+
+
+# file: /var/log/agent-app
+# owner: agent-admin
+# group: agent-core
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-core:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-core:rwx
+default:mask::rwx
+default:other::---
+
+
+
+===== 검증 결과 - 실제 접근 테스트 =====
+[OK]      agent-test  upload_files 파일 생성                     -> allow (기대값 일치)
+[OK]      agent-dev   upload_files 파일 생성                     -> allow (기대값 일치)
+[OK]      agent-test  api_keys 접근                                -> deny (기대값 일치)
+[OK]      agent-dev   api_keys 접근                                -> allow (기대값 일치)
+[OK]      agent-test  /var/log/agent-app 접근                      -> deny (기대값 일치)
+[OK]      agent-admin /var/log/agent-app 쓰기                      -> allow (기대값 일치)
+
+
+############################################################
+# 05_app_env.sh
+############################################################
+
+===== 환경 변수 정의 =====
+[*] /etc/profile.d/agent-env.sh 작성
+[*] /home/agent-admin/agent-app/agent.env 작성
+
+===== API 키 파일 생성 =====
+[*] /home/agent-admin/agent-app/api_keys/t_secret.key (640, agent-admin:agent-core)
+[*] /home/agent-admin/agent-app/api_keys/secret.key -> t_secret.key (앱 호환용 심볼릭 링크)
+
+===== 앱 바이너리 배치 =====
+[*] aarch64 감지 -> /home/agent-admin/agent-app/agent-app-linux-arm64 (750, agent-admin:agent-core)
+
+===== 검증 결과 =====
+--- 환경 변수 (agent-admin 로그인 셸) ---
+AGENT_HOME=/home/agent-admin/agent-app
+AGENT_KEY_PATH=/home/agent-admin/agent-app/api_keys
+AGENT_LOG_DIR=/var/log/agent-app
+AGENT_PORT=15034
+AGENT_UPLOAD_DIR=/home/agent-admin/agent-app/upload_files
+
+--- 키 파일 ---
+total 4
+lrwxrwxrwx  1 agent-admin agent-core 12 Aug 22 18:01 secret.key -> t_secret.key
+-rw-r-----+ 1 agent-admin agent-core 19 Aug 22 18:01 t_secret.key
+내용: agent_api_key_test
+[OK] 키 문자열 일치
+[OK] 앱 참조 경로(secret.key)에서도 동일 키 확인
+
+--- 앱 바이너리 ---
+-rwxr-x--- 1 agent-admin agent-core 7537848 Aug 22 18:01 /home/agent-admin/agent-app/agent-app-linux-arm64
+
+--- 디렉토리 트리 ---
+/home/agent-admin/agent-app:
+total 7380
+-rwxr-x---  1 agent-admin agent-core   7537848 Aug 22 18:01 agent-app-linux-arm64
+-rw-r--r--  1 agent-admin agent-common     334 Aug 22 18:01 agent.env
+drwxrws---+ 2 agent-admin agent-core      4096 Aug 22 18:01 api_keys
+drwxr-x---  2 agent-dev   agent-core      4096 Aug 22 18:01 bin
+drwxrws---+ 2 agent-admin agent-common    4096 Aug 22 18:01 upload_files
+
+/home/agent-admin/agent-app/api_keys:
+total 4
+lrwxrwxrwx  1 agent-admin agent-core 12 Aug 22 18:01 secret.key -> t_secret.key
+-rw-r-----+ 1 agent-admin agent-core 19 Aug 22 18:01 t_secret.key
+
+/home/agent-admin/agent-app/bin:
+total 0
+
+/home/agent-admin/agent-app/upload_files:
+total 0
+
+
+############################################################
+# 06_run_app.sh start
+############################################################
+
+===== 앱 백그라운드 기동 (실행 계정: agent-admin) =====
+
+===== 부팅 시퀀스 출력 =====
+>>> Starting Agent Boot Sequence...
+[1/5] Checking User Account               [OK]
+   ... Running as service user 'agent-admin' (uid=1000)
+[2/5] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/5] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/5] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/5] Verifying Log Permission            [OK]
+   ... Log directory is writable: /var/log/agent-app
+------------------------------------------------------------
+All Boot Checks Passed!
+Agent READY
+2026-08-22 18:01:31,187 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+2026-08-22 18:01:31,187 [INFO] Agent listening at port 15034
+2026-08-22 18:01:31,187 [INFO] === Agent Worker Started ===
+2026-08-22 18:01:31,187 [INFO]    > Cycle: 0 -> 256MB/Lv10 -> 0
+2026-08-22 18:01:31,187 [INFO] --- Step Info: Mode=UP, CPU Lv=1, Mem=0MB ---
+2026-08-22 18:01:31,188 [INFO] [Memory] Increasing... (+25 MB) Total: 25 MB
+
+===== 검증 결과 =====
+[OK] TCP 15034 LISTEN 확인
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*    users:(("agent-app-linux",pid=470,fd=4))
+실행 계정 / PID:
+    PID USER     COMMAND
+    465 agent-a+ /home/agent-admin/agent-app/agent-app-linux-arm64
+
+
+############################################################
+# 07_monitor_deploy.sh
+############################################################
+
+===== monitor.sh 배치 =====
+[*] 문법 검사 (bash -n)
+[OK] 문법 정상
+[*] /home/agent-admin/agent-app/bin/monitor.sh (750, agent-dev:agent-core)
+
+===== 검증 결과 - 권한 =====
+-rwxr-x--- 1 agent-dev agent-core 8284 Aug 22 18:01 /home/agent-admin/agent-app/bin/monitor.sh
+
+===== 검증 결과 - 계정별 실행 권한 =====
+[OK]       agent-dev   실행 권한 -> allow (기대값 일치)
+[OK]       agent-admin 실행 권한 -> allow (기대값 일치)
+[OK]       agent-test  실행 권한 -> deny (기대값 일치)
+
+
+############################################################
+# 08_cron.sh
+############################################################
+
+===== cron 데몬 기동 =====
+[OK] cron 기동 완료
+
+===== crontab 등록 (agent-admin, 매분) =====
+[OK] 등록 완료
+
+===== 검증 결과 - crontab -l =====
+# Agent App 시스템 관제 - 매분 실행
+MAILTO=""
+* * * * * /home/agent-admin/agent-app/bin/monitor.sh >/dev/null 2>>/var/log/agent-app/monitor.cron.log
+
+===== 검증 결과 - cron 프로세스 =====
+  499 root     bash /mnt/B1-1/setup/08_cron.sh
+  509 root     /usr/sbin/cron -P
+
+
+[OK] 전체 구성 완료

@@ -1,0 +1,15 @@
+================================================================
+[증거 1] SSH 포트 변경(20022) 및 Root 원격 접속 차단
+================================================================
+
+$ grep -nE '^[[:space:]]*(Port|PermitRootLogin)' /etc/ssh/sshd_config
+14:Port 20022
+33:PermitRootLogin no
+
+$ sshd -T | grep -iE '^(port|permitrootlogin) '
+port 20022
+permitrootlogin no
+
+$ ss -tulnp | grep -i sshd
+tcp   LISTEN 0      128          0.0.0.0:20022      0.0.0.0:*    users:(("sshd",pid=43,fd=3))             
+tcp   LISTEN 0      128             [::]:20022         [::]:*    users:(("sshd",pid=43,fd=4))             

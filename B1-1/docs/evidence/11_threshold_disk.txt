@@ -1,0 +1,33 @@
+================================================================
+[증거] DISK 임계값 경고 분기 확인
+================================================================
+
+루트 파티션 사용률은 현재 4% 로 80% 임계값에 도달하지 않는다.
+디스크를 실제로 채우는 것은 위험하므로, 임계값을 1% 로 낮춰서 경고 분기가
+정상 동작하는지 확인한다. (CPU/MEM 과 동일한 비교 로직)
+
+$ df -P /
+Filesystem     1024-blocks     Used Available Capacity Mounted on
+overlay          474095688 17367052 432572428       4% /
+
+$ DISK_THRESHOLD=1 runuser -l agent-admin -c '... monitor.sh'
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [OK] (PID: 3081)
+Checking port 15034... [OK]
+
+[SECURITY CHECK]
+Checking firewall (ufw)... [OK] (active)
+
+[RESOURCE MONITORING]
+CPU Usage : 1.4%
+MEM Usage : 36.0%
+DISK Used : 4%
+
+[WARNING] MEM threshold exceeded (36.0% > 10%)
+[WARNING] DISK threshold exceeded (4% > 1%)
+
+[INFO] Log appended: /var/log/agent-app/monitor.log
+[2026-08-22 18:11:09] PID:3081 CPU:1.4% MEM:36.0% DISK_USED:4%
+(exit code: 0)

@@ -1,0 +1,42 @@
+================================================================
+[증거 7-1] crontab 매분 실행 등록
+================================================================
+
+$ crontab -u agent-admin -l
+# Agent App 시스템 관제 - 매분 실행
+MAILTO=""
+* * * * * /home/agent-admin/agent-app/bin/monitor.sh >/dev/null 2>>/var/log/agent-app/monitor.cron.log
+
+$ ps -eo pid,user,args | grep '[c]ron'
+  509 root     /usr/sbin/cron -P
+
+================================================================
+[증거 7-2] /var/log/agent-app/monitor.log 누적 기록 (최근 라인)
+================================================================
+
+$ wc -l /var/log/agent-app/monitor.log
+21 /var/log/agent-app/monitor.log
+
+$ tail -15 /var/log/agent-app/monitor.log
+[2026-08-22 18:05:08] PID:465 CPU:0.4% MEM:33.0% DISK_USED:4%
+[2026-08-22 18:05:10] PID:465 CPU:0.6% MEM:33.4% DISK_USED:4%
+[2026-08-22 18:05:11] PID:465 CPU:3.2% MEM:33.8% DISK_USED:4%
+[2026-08-22 18:06:02] PID:465 CPU:2.3% MEM:36.2% DISK_USED:4%
+[2026-08-22 18:08:32] PID:2132 CPU:0.8% MEM:33.9% DISK_USED:4%
+[2026-08-22 18:08:46] PID:3081 CPU:0.7% MEM:33.7% DISK_USED:4%
+[2026-08-22 18:09:02] PID:3081 CPU:1.9% MEM:34.0% DISK_USED:4%
+[2026-08-22 18:10:02] PID:3081 CPU:1.7% MEM:36.2% DISK_USED:4%
+[2026-08-22 18:10:43] PID:3081 CPU:99.9% MEM:34.3% DISK_USED:4%
+[2026-08-22 18:11:02] PID:3081 CPU:1.6% MEM:36.1% DISK_USED:4%
+[2026-08-22 18:11:09] PID:3081 CPU:1.4% MEM:36.0% DISK_USED:4%
+[2026-08-22 18:12:02] PID:3081 CPU:1.8% MEM:34.0% DISK_USED:4%
+[2026-08-22 18:13:03] PID:3081 CPU:1.4% MEM:36.8% DISK_USED:4%
+[2026-08-22 18:14:02] PID:3081 CPU:1.8% MEM:34.8% DISK_USED:4%
+[2026-08-22 18:14:05] PID:3081 CPU:2.4% MEM:34.0% DISK_USED:4%
+
+$ ls -l /var/log/agent-app/
+total 60
+-rw-rw----+ 1 agent-admin agent-core 16691 Aug 22 18:14 agent-app.console.log
+-rw-rw----+ 1 agent-admin agent-core 31404 Aug 22 18:14 agent_app.log
+-rw-rw----+ 1 agent-admin agent-core     0 Aug 22 18:11 monitor.cron.log
+-rw-rw----+ 1 agent-admin agent-core  1314 Aug 22 18:14 monitor.log

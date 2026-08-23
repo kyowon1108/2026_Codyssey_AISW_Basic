@@ -1,0 +1,28 @@
+================================================================
+[증거 6] monitor.sh 실행 결과 (프로세스/포트/리소스/경고)
+================================================================
+
+$ ls -l /home/agent-admin/agent-app/bin/monitor.sh
+-rwxr-x--- 1 agent-dev agent-core 9051 Aug 22 18:11 /home/agent-admin/agent-app/bin/monitor.sh
+
+--- cron 실행 계정(agent-admin)으로 직접 실행 ---
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [OK] (PID: 3081)
+Checking port 15034... [OK]
+
+[SECURITY CHECK]
+Checking firewall (ufw)... [OK] (active)
+
+[RESOURCE MONITORING]
+CPU Usage : 2.4%
+MEM Usage : 34.0%
+DISK Used : 4%
+
+[WARNING] MEM threshold exceeded (34.0% > 10%)
+
+[INFO] Log appended: /var/log/agent-app/monitor.log
+[2026-08-22 18:14:05] PID:3081 CPU:2.4% MEM:34.0% DISK_USED:4%

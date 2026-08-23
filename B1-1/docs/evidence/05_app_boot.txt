@@ -1,0 +1,47 @@
+================================================================
+[증거 5] 앱 Boot Sequence 5단계 [OK] 및 Agent READY
+================================================================
+
+$ sed -n '1,15p' /var/log/agent-app/agent-app.console.log
+>>> Starting Agent Boot Sequence...
+[1/5] Checking User Account               [OK]
+   ... Running as service user 'agent-admin' (uid=1000)
+[2/5] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/5] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/5] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/5] Verifying Log Permission            [OK]
+   ... Log directory is writable: /var/log/agent-app
+------------------------------------------------------------
+All Boot Checks Passed!
+Agent READY
+2026-08-22 18:08:44,708 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+
+--- 환경 변수 ---
+
+$ runuser -l agent-admin -c 'env | grep ^AGENT_ | sort'
+AGENT_HOME=/home/agent-admin/agent-app
+AGENT_KEY_PATH=/home/agent-admin/agent-app/api_keys
+AGENT_LOG_DIR=/var/log/agent-app
+AGENT_PORT=15034
+AGENT_UPLOAD_DIR=/home/agent-admin/agent-app/upload_files
+
+$ cat /home/agent-admin/agent-app/agent.env
+# Agent App 실행 환경 변수 (스크립트/cron 용)
+# cron 은 로그인 셸이 아니므로 /etc/profile.d 를 읽지 않는다.
+AGENT_HOME=/home/agent-admin/agent-app
+AGENT_PORT=15034
+AGENT_UPLOAD_DIR=/home/agent-admin/agent-app/upload_files
+AGENT_KEY_PATH=/home/agent-admin/agent-app/api_keys
+AGENT_LOG_DIR=/var/log/agent-app
+
+--- 실행 계정 / 리슨 상태 ---
+
+$ ps -eo pid,user,args | grep '[a]gent-app-linux'
+ 3081 agent-a+ /home/agent-admin/agent-app/agent-app-linux-arm64
+ 3086 agent-a+ /home/agent-admin/agent-app/agent-app-linux-arm64
+
+$ ss -tlnp | grep 15034
+LISTEN 1      1            0.0.0.0:15034      0.0.0.0:*    users:(("agent-app-linux",pid=3086,fd=4))

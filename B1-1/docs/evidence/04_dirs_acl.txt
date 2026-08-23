@@ -1,0 +1,99 @@
+================================================================
+[증거 4] 디렉토리 구조 및 권한(ACL 포함)
+================================================================
+
+$ ls -ld /home/agent-admin/agent-app /home/agent-admin/agent-app/upload_files /home/agent-admin/agent-app/api_keys /home/agent-admin/agent-app/bin /var/log/agent-app
+drwxr-x---  5 agent-admin agent-common 4096 Aug 22 18:01 /home/agent-admin/agent-app
+drwxrws---+ 2 agent-admin agent-core   4096 Aug 22 18:01 /home/agent-admin/agent-app/api_keys
+drwxr-x---  2 agent-dev   agent-core   4096 Aug 22 18:11 /home/agent-admin/agent-app/bin
+drwxrws---+ 2 agent-admin agent-common 4096 Aug 22 18:01 /home/agent-admin/agent-app/upload_files
+drwxrws---+ 2 agent-admin agent-core   4096 Aug 22 18:08 /var/log/agent-app
+
+$ ls -l /home/agent-admin/agent-app /home/agent-admin/agent-app/api_keys /home/agent-admin/agent-app/bin
+/home/agent-admin/agent-app:
+total 7380
+-rwxr-x---  1 agent-admin agent-core   7537848 Aug 22 18:01 agent-app-linux-arm64
+-rw-r--r--  1 agent-admin agent-common     334 Aug 22 18:01 agent.env
+drwxrws---+ 2 agent-admin agent-core      4096 Aug 22 18:01 api_keys
+drwxr-x---  2 agent-dev   agent-core      4096 Aug 22 18:11 bin
+drwxrws---+ 2 agent-admin agent-common    4096 Aug 22 18:01 upload_files
+
+/home/agent-admin/agent-app/api_keys:
+total 4
+lrwxrwxrwx  1 agent-admin agent-core 12 Aug 22 18:01 secret.key -> t_secret.key
+-rw-r-----+ 1 agent-admin agent-core 19 Aug 22 18:01 t_secret.key
+
+/home/agent-admin/agent-app/bin:
+total 12
+-rwxr-x--- 1 agent-dev agent-core 9051 Aug 22 18:11 monitor.sh
+
+$ getfacl -p /home/agent-admin/agent-app/upload_files
+# file: /home/agent-admin/agent-app/upload_files
+# owner: agent-admin
+# group: agent-common
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-common:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-common:rwx
+default:mask::rwx
+default:other::---
+
+
+$ getfacl -p /home/agent-admin/agent-app/api_keys
+# file: /home/agent-admin/agent-app/api_keys
+# owner: agent-admin
+# group: agent-core
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-core:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-core:rwx
+default:mask::rwx
+default:other::---
+
+
+$ getfacl -p /var/log/agent-app
+# file: /var/log/agent-app
+# owner: agent-admin
+# group: agent-core
+# flags: -s-
+user::rwx
+group::rwx
+group:agent-core:rwx
+mask::rwx
+other::---
+default:user::rwx
+default:group::rwx
+default:group:agent-core:rwx
+default:mask::rwx
+default:other::---
+
+
+--- 실제 접근 테스트 (기대값: common=공유 허용 / core 외 보안영역 차단) ---
+
+$ runuser -u agent-test -- touch /home/agent-admin/agent-app/upload_files/from_test && echo 'agent-test: upload_files 쓰기 성공' && runuser -u agent-test -- rm -f /home/agent-admin/agent-app/upload_files/from_test
+agent-test: upload_files 쓰기 성공
+
+$ runuser -u agent-test -- cat /home/agent-admin/agent-app/api_keys/t_secret.key
+cat: /home/agent-admin/agent-app/api_keys/t_secret.key: Permission denied
+(exit code: 1)
+
+$ runuser -u agent-test -- ls /var/log/agent-app
+ls: cannot open directory '/var/log/agent-app': Permission denied
+(exit code: 2)
+
+$ runuser -u agent-dev -- cat /home/agent-admin/agent-app/api_keys/t_secret.key
+agent_api_key_test
+
+$ runuser -u agent-test -- /home/agent-admin/agent-app/bin/monitor.sh
+runuser: failed to execute /home/agent-admin/agent-app/bin/monitor.sh: Permission denied
+(exit code: 1)

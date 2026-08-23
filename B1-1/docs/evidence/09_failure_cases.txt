@@ -1,0 +1,191 @@
+
+================================================================
+[사전] 정상 상태 확인
+================================================================
+
+$ ps -eo pid,user,stat,args | grep '[a]gent-app-linux'
+ 2132 agent-a+ Ss   /home/agent-admin/agent-app/agent-app-linux-arm64
+ 2137 agent-a+ SN   /home/agent-admin/agent-app/agent-app-linux-arm64
+(exit code: 0)
+
+$ ss -ltn | grep 15034
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+(exit code: 0)
+
+================================================================
+[검증 1] 로그 파일 10MB 초과 시 로테이션 (최대 10MB / 10개 파일)
+================================================================
+
+$ cp /var/log/agent-app/monitor.log /tmp/monitor.log.backup && wc -l < /tmp/monitor.log.backup
+10
+(exit code: 0)
+  -> 10MB 를 초과한 상태를 인위적으로 만든다
+
+$ head -c 11534336 /dev/zero | tr '\0' 'x' > /var/log/agent-app/monitor.log; chown agent-admin:agent-core /var/log/agent-app/monitor.log; ls -lh /var/log/agent-app/monitor.log
+-rw-rw----+ 1 agent-admin agent-core 11M Aug 22 18:08 /var/log/agent-app/monitor.log
+(exit code: 0)
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [OK] (PID: 2132)
+Checking port 15034... [OK]
+
+[SECURITY CHECK]
+Checking firewall (ufw)... [OK] (active)
+
+[RESOURCE MONITORING]
+CPU Usage : 1.0%
+MEM Usage : 33.9%
+DISK Used : 4%
+
+[WARNING] MEM threshold exceeded (33.9% > 10%)
+[INFO] Log rotated (11534336 bytes >= 10485760 bytes), keeping 10 files
+
+[INFO] Log appended: /var/log/agent-app/monitor.log
+[2026-08-22 18:08:29] PID:2132 CPU:1.0% MEM:33.9% DISK_USED:4%
+(exit code: 0)
+
+$ ls -l /var/log/agent-app/
+total 11292
+-rw-rw----+ 1 agent-admin agent-core     1742 Aug 22 18:08 agent-app.console.log
+-rw-rw----+ 1 agent-admin agent-core    14865 Aug 22 18:08 agent_app.log
+-rw-rw----+ 1 agent-admin agent-core      116 Aug 22 18:08 monitor.cron.log
+-rw-rw----+ 1 agent-admin agent-core       63 Aug 22 18:08 monitor.log
+-rw-rw----+ 1 agent-admin agent-core 11534336 Aug 22 18:08 monitor.log.1
+(exit code: 0)
+  -> 검증 전 로그로 복구
+
+$ cp /tmp/monitor.log.backup /var/log/agent-app/monitor.log && rm -f /var/log/agent-app/monitor.log.1 /tmp/monitor.log.backup && chown agent-admin:agent-core /var/log/agent-app/monitor.log && ls -l /var/log/agent-app/
+total 28
+-rw-rw----+ 1 agent-admin agent-core  1742 Aug 22 18:08 agent-app.console.log
+-rw-rw----+ 1 agent-admin agent-core 14865 Aug 22 18:08 agent_app.log
+-rw-rw----+ 1 agent-admin agent-core   116 Aug 22 18:08 monitor.cron.log
+-rw-rw----+ 1 agent-admin agent-core   620 Aug 22 18:08 monitor.log
+(exit code: 0)
+
+================================================================
+[검증 2] 방화벽 비활성 시 경고만 출력하고 계속 진행
+================================================================
+
+$ ufw --force disable && ufw status
+Firewall stopped and disabled on system startup
+Status: inactive
+(exit code: 0)
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [OK] (PID: 2132)
+Checking port 15034... [OK]
+
+[SECURITY CHECK]
+Checking firewall (ufw)... [FAIL]
+[WARNING] Firewall is INACTIVE. Inbound traffic is not filtered.
+
+[RESOURCE MONITORING]
+CPU Usage : 0.8%
+MEM Usage : 33.9%
+DISK Used : 4%
+
+[WARNING] MEM threshold exceeded (33.9% > 10%)
+
+[INFO] Log appended: /var/log/agent-app/monitor.log
+[2026-08-22 18:08:32] PID:2132 CPU:0.8% MEM:33.9% DISK_USED:4%
+(exit code: 0)
+  -> 방화벽 복구
+
+$ bash /mnt/B1-1/setup/02_firewall.sh >/dev/null 2>&1; ufw status | head -2
+Status: active
+
+(exit code: 0)
+
+================================================================
+[검증 3] 앱 프로세스 부재 시 Health Check 실패 (exit 1)
+================================================================
+
+$ bash /mnt/B1-1/setup/06_run_app.sh stop
+
+===== 앱 종료 (PID: 2132, PGID: 2132) =====
+[WARNING] SIGINT 로 종료되지 않아 다음 시그널을 시도합니다.
+[OK] SIGTERM 로 종료 완료 (PID: 2132)
+[OK] 포트 15034 해제 확인
+(exit code: 0)
+
+$ ps -eo pid,stat,args | grep '[a]gent-app-linux' || echo '(관련 프로세스 없음)'
+(관련 프로세스 없음)
+(exit code: 0)
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [FAIL]
+[ERROR] Agent application process not found. (pattern: agent-app-linux)
+(exit code: 1)
+
+================================================================
+[검증 4] 좀비(<defunct>) 프로세스를 살아있다고 오탐하지 않음
+================================================================
+  -> 앱과 같은 이름의 프로세스를 만든 뒤 부모를 SIGSTOP 시켜 좀비로 남긴다
+
+$ ps -eo pid,stat,comm,args | grep '[a]gent-app-linux'
+ 2999 Ts   bash            bash -c echo $$ > /tmp/zombie_parent.pid; /tmp/agent-app-linux-zombie 1 & kill -STOP $$
+ 3000 Z    agent <defunct> [agent-app-linux] <defunct>
+(exit code: 0)
+  -> pgrep 은 좀비를 '살아있는 프로세스'로 반환한다
+
+$ pgrep -af agent-app-linux | grep -v 'bash -lc'
+2999 bash -c echo $$ > /tmp/zombie_parent.pid; /tmp/agent-app-linux-zombie 1 & kill -STOP $$
+3000 agent-app-linux
+(exit code: 0)
+  -> monitor.sh 는 상태 Z 를 걸러내고 실패로 판정해야 한다
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [FAIL]
+[ERROR] Agent application process not found. (pattern: agent-app-linux)
+(exit code: 1)
+  -> 좀비 정리
+
+$ p=$(cat /tmp/zombie_parent.pid 2>/dev/null); [ -n "$p" ] && { kill -CONT $p 2>/dev/null; kill -9 $p 2>/dev/null; }; sleep 1; rm -f /tmp/agent-app-linux-zombie /tmp/zombie_parent.pid; ps -eo pid,stat,args | grep '[a]gent-app-linux' || echo '(관련 프로세스 없음)'
+ 3044 Ss   bash -lc p=$(cat /tmp/zombie_parent.pid 2>/dev/null); [ -n "$p" ] && { kill -CONT $p 2>/dev/null; kill -9 $p 2>/dev/null; }; sleep 1; rm -f /tmp/agent-app-linux-zombie /tmp/zombie_parent.pid; ps -eo pid,stat,args | grep '[a]gent-app-linux' || echo '(?????? ???????????? ??????)'
+(exit code: 0)
+
+================================================================
+[복구] 앱 재기동 및 정상 동작 확인
+================================================================
+
+$ bash /mnt/B1-1/setup/06_run_app.sh start 2>&1 | tail -6
+===== 검증 결과 =====
+[OK] TCP 15034 LISTEN 확인
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*    users:(("agent-app-linux",pid=3086,fd=4))
+실행 계정 / PID:
+    PID USER     COMMAND
+   3081 agent-a+ /home/agent-admin/agent-app/agent-app-linux-arm64
+(exit code: 0)
+
+$ runuser -l agent-admin -c /home/agent-admin/agent-app/bin/monitor.sh
+====== SYSTEM MONITOR RESULT ======
+
+[HEALTH CHECK]
+Checking process 'agent-app-linux'... [OK] (PID: 3081)
+Checking port 15034... [OK]
+
+[SECURITY CHECK]
+Checking firewall (ufw)... [OK] (active)
+
+[RESOURCE MONITORING]
+CPU Usage : 0.7%
+MEM Usage : 33.7%
+DISK Used : 4%
+
+[WARNING] MEM threshold exceeded (33.7% > 10%)
+
+[INFO] Log appended: /var/log/agent-app/monitor.log
+[2026-08-22 18:08:46] PID:3081 CPU:0.7% MEM:33.7% DISK_USED:4%
+(exit code: 0)
