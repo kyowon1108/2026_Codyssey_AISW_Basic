@@ -50,7 +50,11 @@ themeToggle.addEventListener("click", () => {
 
 const setMenuOpen = (open) => {
   navigation.classList.toggle("active", open);
-  header.classList.toggle("menu-open", open);
+  if (open) {
+    header.classList.add("menu-open");
+  } else {
+    header.classList.remove("menu-open");
+  }
   menuToggle.setAttribute("aria-expanded", String(open));
   menuToggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
 };
@@ -72,6 +76,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     if (!target) return;
     event.preventDefault();
     target.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    if (link.classList.contains("skip-link")) target.focus({ preventScroll: true });
     history.replaceState(null, "", link.getAttribute("href"));
     setMenuOpen(false);
   });

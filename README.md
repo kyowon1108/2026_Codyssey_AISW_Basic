@@ -4,7 +4,7 @@ B1-1 과제로 만든 반응형 자기소개 웹페이지입니다. 토스 디�
 
 ## 실행
 
-VS Code Live Server에서 `index.html`을 열거나 이 배포 브랜치의 루트에서 아래 명령을 실행합니다.
+VS Code에서 이 배포 브랜치의 루트 폴더를 열고 Live Server 확장(`ritwickdey.LiveServer`)을 설치한 뒤 `index.html`을 **Open with Live Server**로 실행합니다. 또는 루트에서 아래 명령을 실행합니다.
 
 ```bash
 python3 -m http.server 8000
