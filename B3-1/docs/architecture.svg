@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title description">
+  <title id="title">Verified Codyssey B3-1 AWS architecture</title>
+  <desc id="description">The deployed service path used an internet gateway, public subnet, route table, restricted security group, and one EC2 instance. Resources were deleted after verification.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#2563eb"/>
+    </marker>
+    <style>
+      .title { font: 700 30px -apple-system, BlinkMacSystemFont, Arial, sans-serif; fill: #0f172a; }
+      .heading { font: 700 21px -apple-system, BlinkMacSystemFont, Arial, sans-serif; fill: #0f172a; }
+      .body { font: 16px -apple-system, BlinkMacSystemFont, Arial, sans-serif; fill: #334155; }
+      .small { font: 14px -apple-system, BlinkMacSystemFont, Arial, sans-serif; fill: #475569; }
+      .mono { font: 16px SFMono-Regular, Menlo, monospace; fill: #1e40af; }
+      .flow { stroke: #2563eb; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" fill="#f8fafc"/>
+  <text class="title" x="48" y="55">Codyssey B3-1 · verified AWS service path</text>
+  <rect x="1015" y="25" width="215" height="38" rx="19" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="1122" y="50" text-anchor="middle" font="700 14px Arial, sans-serif" fill="#166534">DEPLOYED · CLEANED</text>
+  <text class="small" x="48" y="84">Region: ap-northeast-2 (Seoul) · One temporary public EC2 instance · External HTTP 200 verified</text>
+
+  <rect x="48" y="245" width="185" height="115" rx="18" fill="#fff" stroke="#93c5fd" stroke-width="2"/>
+  <text class="heading" x="140" y="290" text-anchor="middle">Internet</text>
+  <text class="body" x="140" y="321" text-anchor="middle">Visitor → HTTP :80</text>
+
+  <rect x="280" y="258" width="165" height="91" rx="17" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text class="heading" x="362" y="295" text-anchor="middle">Internet</text>
+  <text class="heading" x="362" y="321" text-anchor="middle">Gateway</text>
+  <path class="flow" d="M234 303 H270"/>
+
+  <rect x="474" y="125" width="750" height="545" rx="24" fill="#eff6ff" stroke="#3b82f6" stroke-width="3"/>
+  <text class="heading" x="510" y="169">VPC</text>
+  <text class="mono" x="570" y="169">10.31.0.0/16</text>
+
+  <rect x="518" y="205" width="658" height="414" rx="21" fill="#fff" stroke="#93c5fd" stroke-width="2" stroke-dasharray="9 6"/>
+  <text class="heading" x="548" y="243">Public Subnet</text>
+  <text class="mono" x="724" y="243">10.31.1.0/24</text>
+
+  <rect x="553" y="285" width="240" height="108" rx="14" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text class="heading" x="573" y="320">Route Table</text>
+  <text class="mono" x="573" y="351">0.0.0.0/0 → IGW</text>
+  <text class="small" x="573" y="375">Subnet association</text>
+
+  <rect x="841" y="285" width="288" height="108" rx="14" fill="#ecfdf5" stroke="#86efac"/>
+  <text class="heading" x="861" y="320">Security Group</text>
+  <text class="body" x="861" y="348">HTTP 80 ← 0.0.0.0/0</text>
+  <text class="body" x="861" y="374">SSH 22 ← personal IP/32</text>
+
+  <rect x="665" y="453" width="375" height="125" rx="18" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text class="heading" x="695" y="490">EC2 · t3.micro</text>
+  <text class="body" x="695" y="520">Amazon Linux 2023 · Nginx</text>
+  <text class="body" x="695" y="548">B1-1 portfolio /health → 200 OK</text>
+  <path class="flow" d="M446 303 H505 V415 H852 V444"/>
+  <text class="small" x="510" y="435">Public IPv4 assigned at launch</text>
+  <path class="flow" d="M984 394 V440"/>
+
+  <rect x="48" y="521" width="345" height="125" rx="18" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text class="heading" x="72" y="559">Limited IAM Role</text>
+  <text class="body" x="72" y="590">EC2/VPC/SG actions in Seoul only</text>
+  <text class="small" x="72" y="617">Provisioning credentials; no admin policy</text>
+  <path d="M393 575 H475" stroke="#64748b" stroke-width="2" stroke-dasharray="7 6"/>
+
+  <text class="small" x="48" y="706">No NAT Gateway, load balancer, RDS, or Elastic IP used. All B3-1 resources were deleted after evidence capture.</text>
+</svg>
