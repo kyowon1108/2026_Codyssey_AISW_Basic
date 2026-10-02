@@ -1,0 +1,29 @@
+UTC=2026-10-02T09:23:25Z
+INSTANCE_STATE
+[
+    {
+        "Id": "i-08b9ec3780da8b591",
+        "State": "terminated"
+    }
+]
+VPCS
+[]
+SUBNETS
+[]
+IGWS
+[]
+ROUTE_TABLES
+[]
+SECURITY_GROUPS
+[]
+EBS_VOLUMES
+[]
+ELASTIC_IPS
+[]
+KEY_PAIRS
+[]
+IAM_ROLE_AFTER_DELETE
+
+An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name codyssey-b3-1-evidence cannot be found.
+IAM_GET_ROLE_EXIT=254
+LOCAL_PRIVATE_KEY=absent

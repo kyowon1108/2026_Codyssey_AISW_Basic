@@ -1,0 +1,11 @@
+SSH_TARGET=ec2-user@3.35.10.74 (ed25519 key)
+Warning: Permanently added '3.35.10.74' (ED25519) to the list of known hosts.
+REMOTE_USER=ec2-user
+REMOTE_HOST=ip-10-31-1-244.ap-northeast-2.compute.internal
+REMOTE_TIME_UTC=2026-10-02T09:16:00Z
+NGINX=active
+LOCAL_ROOT=200
+LOCAL_HEALTH=200
+OUTBOUND_HTTPS=200
+SSHD_ACCEPTED_ENTRIES
+Oct 02 09:15:59 ip-10-31-1-244.ap-northeast-2.compute.internal sshd-session[26697]: Accepted publickey for ec2-user from 121.135.181.35 port 56995 ssh2: ED25519 SHA256:eJGblYnlU8zWev/H8W7VQMaloyJIA4wBcp4jYy+yITw

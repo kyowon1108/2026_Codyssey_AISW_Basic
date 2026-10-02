@@ -1,0 +1,9 @@
+UTC=2026-10-02T09:20:44Z
+ASSUMED_ROLE
+arn:aws:sts::881856398561:assumed-role/codyssey-b3-1-evidence/botocore-session-1790932198
+ATTACHED_MANAGED_POLICIES
+[]
+INLINE_POLICIES
+[
+    "b3-1-ec2-vpc"
+]

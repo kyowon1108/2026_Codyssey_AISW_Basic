@@ -1,0 +1,13 @@
+EXTERNAL_URL=http://3.35.10.74/health
+2026-10-02T09:19:35Z
+HTTP/1.1 200 OK
+Server: nginx/1.30.5
+Date: Fri, 02 Oct 2026 09:19:36 GMT
+Content-Type: application/octet-stream
+Content-Length: 3
+Last-Modified: Fri, 02 Oct 2026 09:14:33 GMT
+Connection: keep-alive
+ETag: "6abf75f9-3"
+Accept-Ranges: bytes
+
+OK
