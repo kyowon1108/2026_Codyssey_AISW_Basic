@@ -1,0 +1,41 @@
+[project]
+name = "ai-gitgen"
+version = "0.1.0"
+description = "Git diff 기반 커밋 메시지와 PR 초안 생성 CLI"
+requires-python = ">=3.10"
+dependencies = ["typer>=0.16,<1", "pydantic>=2.11,<3", "httpx2[http2,brotli,zstd]>=2.13,<3", "typing-extensions>=4.12,<5"]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.12,<1", "basedpyright>=1.31,<2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-config", "--strict-markers"]
+filterwarnings = ["error"]
+pythonpath = ["."]
+
+[tool.basedpyright]
+typeCheckingMode = "all"
+pythonVersion = "3.10"
+include = ["gitgen", "main.py", "tests", "scripts"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["ALL"]
+# CLI feedback uses print; Korean messages are the assignment's user interface.
+ignore = ["COM812", "ISC001", "ISC003", "D203", "D213", "RUF001", "RUF002", "RUF003", "CPY001"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+# AppError messages are user feedback, not separate exception classes per sentence.
+"gitgen/*.py" = ["TRY003", "EM101", "EM102"]
+
+[tool.ruff.lint.per-file-ignores]
+"gitgen/cli.py" = ["T201", "FBT001", "FBT002", "PLR0913", "PLR0917", "TRY301"]
+"tests/**/*.py" = ["S101", "D", "ARG", "PLR2004", "INP001"]
+"scripts/**/*.py" = ["T201", "INP001"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
