@@ -33,7 +33,7 @@
 | README 설치·실행·키·예시·주의사항 | [README.md](../README.md) | 충족 |
 | GitHub 업로드 | 본 보고서가 포함된 제출 브랜치에서 소스 확인 | 제출 브랜치 기준 충족 |
 
-제출 저장소: [kyowon1108/2026_Codyssey_AISW_Basic의 codex/b3-2 브랜치](https://github.com/kyowon1108/2026_Codyssey_AISW_Basic/tree/codex/b3-2/B3-2). 기존 저장소를 재사용하고 B3-2 구현·테스트·문서·의존성 잠금 파일만 업로드합니다. 다른 과제의 작업 파일은 제출 커밋에 포함하지 않습니다.
+제출 저장소: [kyowon1108/2026_Codyssey_AISW_Basic의 test/b3-2 브랜치](https://github.com/kyowon1108/2026_Codyssey_AISW_Basic/tree/test/b3-2/B3-2). 기존 저장소를 재사용하고 B3-2 구현·테스트·문서·의존성 잠금 파일만 업로드합니다. 다른 과제의 작업 파일은 제출 커밋에 포함하지 않습니다.
 
 ## 실 API 표본 검토
 
