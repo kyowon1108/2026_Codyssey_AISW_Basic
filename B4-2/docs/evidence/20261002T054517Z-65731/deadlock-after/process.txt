@@ -1,0 +1,69 @@
+2026-10-02T05:47:26Z
+$ ps -fp 2917
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 R     0.0  1592 -                                agent-leak-app-
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+2026-10-02T05:47:32Z
+$ ps -fp 2917,2943
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  1 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+501       2943  2917  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917,2943 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 S     1.0  1544 do_wait                          agent-leak-app-
+ 2943  2943 SN    0.8 16808 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:47:37Z
+$ ps -fp 2917,2943
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+501       2943  2917  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917,2943 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 S     0.5  1544 do_wait                          agent-leak-app-
+ 2943  2943 SN    0.6 16808 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:47:42Z
+$ ps -fp 2917,2943
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+501       2943  2917  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917,2943 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 S     0.3  1544 do_wait                          agent-leak-app-
+ 2943  2943 SN    0.8 16808 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:47:47Z
+$ ps -fp 2917,2943
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+501       2943  2917  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917,2943 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 S     0.2  1544 do_wait                          agent-leak-app-
+ 2943  2943 SN    0.7 16808 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:47:52Z
+$ ps -fp 2917,2943
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       2917     7  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+501       2943  2917  0 14:47 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 2917,2943 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 2917  2917 S     0.1  1544 do_wait                          agent-leak-app-
+ 2943  2943 SN    0.8 16808 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          

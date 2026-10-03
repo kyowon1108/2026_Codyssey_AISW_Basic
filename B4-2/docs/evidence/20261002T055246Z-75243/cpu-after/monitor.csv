@@ -1,0 +1,4 @@
+utc,pid,state,cpu_one_core_percent,cpu_lifetime_percent,rss_sum_kib,threads,app_log_bytes
+2026-10-02T05:52:46Z,23,S,0,0,4464,3,0
+2026-10-02T05:52:48Z,23,S,5.08,6,21196,4,1330
+2026-10-02T05:52:49Z,23,S,0.00,3,21196,4,1951

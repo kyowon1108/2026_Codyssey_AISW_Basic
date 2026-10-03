@@ -1,0 +1,3 @@
+Missing executable: /Users/kapr/Projects/External/2026_Codyssey/2026_Codyssey_AISW_Basic/B4-2/agent-app/agent-app-leak-arm64
+Place the provided binary here and chmod +x it. No substitute application is used.
+exit_code=2

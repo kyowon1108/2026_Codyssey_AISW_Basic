@@ -1,0 +1,13 @@
+2026-10-02T05:47:57Z
+$ ps -fp 23,26,29
+UID        PID  PPID  C STIME TTY          TIME CMD
+501         23     7  0 14:47 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501         26    23  0 14:47 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501         29    26  0 14:47 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 23,26,29 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+   23    23 Ss    0.0  1460 do_sys_poll                      script
+   26    26 Ss+   0.0  1404 do_wait                          sh
+   29    29 R+    0.0  1616 -                                agent-leak-app-
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess

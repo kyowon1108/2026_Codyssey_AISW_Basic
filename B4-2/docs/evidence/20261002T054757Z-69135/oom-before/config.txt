@@ -1,0 +1,8 @@
+AGENT_HOME=/work/runtime/20261002T054757Z-69135/oom-before
+AGENT_KEY_PATH=/work/runtime/20261002T054757Z-69135/oom-before/api_keys
+AGENT_LOG_DIR=/work/docs/evidence/20261002T054757Z-69135/oom-before/app-logs
+AGENT_PORT=15034
+AGENT_UPLOAD_DIR=/work/runtime/20261002T054757Z-69135/oom-before/upload_files
+CPU_MAX_OCCUPY=100
+MEMORY_LIMIT=50
+MULTI_THREAD_ENABLE=false

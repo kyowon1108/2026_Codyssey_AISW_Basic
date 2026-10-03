@@ -1,0 +1,63 @@
+Launching oom-before
+scripts/experiment.sh: line 39:    23 Killed                  "$APP_BIN" > "$out/application.log" 2>&1
+pid=23
+started_utc=2026-10-02T05:45:17Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=6
+termination=application_exit
+exit_code=137
+samples=5
+first_rss_kib=1608
+last_rss_kib=43908
+peak_rss_kib=43908
+peak_cpu_one_core_percent=4.27
+Launching oom-after
+scripts/experiment.sh: line 39:   155 Killed                  "$APP_BIN" > "$out/application.log" 2>&1
+pid=155
+started_utc=2026-10-02T05:45:23Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=12
+termination=application_exit
+exit_code=137
+samples=11
+first_rss_kib=1608
+last_rss_kib=95100
+peak_rss_kib=95100
+peak_cpu_one_core_percent=5.08
+Launching cpu-before
+pid=428
+started_utc=2026-10-02T05:45:35Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=37
+termination=application_exit
+exit_code=143
+samples=36
+first_rss_kib=1612
+last_rss_kib=18372
+peak_rss_kib=18372
+peak_cpu_one_core_percent=5.08
+Launching cpu-after
+pid=1273
+started_utc=2026-10-02T05:46:12Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=45
+termination=experiment_timeout
+exit_code=143
+samples=43
+first_rss_kib=1612
+last_rss_kib=377028
+peak_rss_kib=377028
+peak_cpu_one_core_percent=5.13
+Launching deadlock-before
+pid=2283
+started_utc=2026-10-02T05:46:59Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=27
+termination=application_exit
+exit_code=143
+samples=27
+first_rss_kib=1608
+last_rss_kib=18372
+peak_rss_kib=18372
+peak_cpu_one_core_percent=5.93
+Launching deadlock-after

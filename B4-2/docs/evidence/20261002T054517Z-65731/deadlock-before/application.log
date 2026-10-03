@@ -1,0 +1,40 @@
+>>> Starting Agent Boot Sequence...
+[1/6] Checking User Account               [OK]
+   ... Running as service user '501' (uid=501)
+[2/6] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/6] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/6] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/6] Verifying Log Permission            [OK]
+   ... Log directory is writable: /work/docs/evidence/20261002T054517Z-65731/deadlock-before/app-logs
+[6/6] Verifying Mission Environment       [OK]
+   ... MEMORY_LIMIT=512MB, CPU_MAX_OCCUPY=100%, MULTI_THREAD_ENABLE=True
+------------------------------------------------------------
+All Boot Checks Passed!
+Agent READY
+2026-10-02 14:46:59,137 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+2026-10-02 14:46:59,137 [INFO] Agent listening at port 15034
+
+==================================================
+ [ Agent Initiate ] Resource Check 
+==================================================
+ [ MEMORY ] Limit: 512MB 		[ OK ]
+ [ CPU    ] Limit: 100%  		[ WARNING: Recommend Under 50% ]
+ [ THREAD ] Concurrency: True 		[ WARNING ]
+--------------------------------------------------
+ >>> SYSTEM WARNING: POTENTIAL DEADLOCK IN CONCURRENT MODE.
+==================================================
+
+2026-10-02 14:47:01,148 [INFO] [CpuWorker] Started. Maximum CPU Limit: 100%
+2026-10-02 14:47:01,149 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-02 14:47:04,268 [INFO] [CpuWorker] Current Load: 9.39%
+2026-10-02 14:47:07,394 [INFO] [CpuWorker] Current Load: 17.19%
+2026-10-02 14:47:10,517 [INFO] [CpuWorker] Current Load: 23.95%
+2026-10-02 14:47:13,638 [INFO] [CpuWorker] Current Load: 26.85%
+2026-10-02 14:47:16,745 [INFO] [CpuWorker] Current Load: 35.95%
+2026-10-02 14:47:19,863 [INFO] [CpuWorker] Current Load: 37.36%
+2026-10-02 14:47:22,982 [INFO] [CpuWorker] Current Load: 45.32%
+2026-10-02 14:47:26,090 [INFO] [CpuWorker] Current Load: 51.13%
+2026-10-02 14:47:26,192 [CRITICAL] [CpuWorker] CPU Threshold Violated! (51.13%).

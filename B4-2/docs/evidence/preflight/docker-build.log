@@ -1,0 +1,147 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 266B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:22.04
+#2 DONE 2.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/2] FROM docker.io/library/ubuntu:22.04@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7
+#4 resolve docker.io/library/ubuntu:22.04@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7 done
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 0B / 27.68MB 0.2s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 5.24MB / 27.68MB 0.5s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 12.58MB / 27.68MB 0.6s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 17.83MB / 27.68MB 0.8s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 22.02MB / 27.68MB 0.9s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 27.26MB / 27.68MB 1.1s
+#4 sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 27.68MB / 27.68MB 1.1s done
+#4 extracting sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136
+#4 extracting sha256:2ea2e315627a543238a7a365eba783401b8379861d62da1bf8d1506f5b14f136 0.3s done
+#4 DONE 1.4s
+
+#5 [2/2] RUN apt-get update && apt-get install -y --no-install-recommends     procps iproute2 tzdata ca-certificates     && rm -rf /var/lib/apt/lists/*
+#5 0.818 Get:1 http://ports.ubuntu.com/ubuntu-ports jammy InRelease [270 kB]
+#5 2.077 Get:2 http://ports.ubuntu.com/ubuntu-ports jammy-updates InRelease [128 kB]
+#5 2.386 Get:3 http://ports.ubuntu.com/ubuntu-ports jammy-backports InRelease [127 kB]
+#5 2.703 Get:4 http://ports.ubuntu.com/ubuntu-ports jammy-security InRelease [129 kB]
+#5 2.975 Get:5 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 Packages [1758 kB]
+#5 3.764 Get:6 http://ports.ubuntu.com/ubuntu-ports jammy/universe arm64 Packages [17.2 MB]
+#5 5.330 Get:7 http://ports.ubuntu.com/ubuntu-ports jammy/multiverse arm64 Packages [224 kB]
+#5 5.338 Get:8 http://ports.ubuntu.com/ubuntu-ports jammy/restricted arm64 Packages [24.2 kB]
+#5 5.339 Get:9 http://ports.ubuntu.com/ubuntu-ports jammy-updates/universe arm64 Packages [1712 kB]
+#5 5.378 Get:10 http://ports.ubuntu.com/ubuntu-ports jammy-updates/restricted arm64 Packages [8296 kB]
+#5 5.890 Get:11 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 Packages [4558 kB]
+#5 6.154 Get:12 http://ports.ubuntu.com/ubuntu-ports jammy-updates/multiverse arm64 Packages [70.2 kB]
+#5 6.156 Get:13 http://ports.ubuntu.com/ubuntu-ports jammy-backports/universe arm64 Packages [33.7 kB]
+#5 6.157 Get:14 http://ports.ubuntu.com/ubuntu-ports jammy-backports/main arm64 Packages [82.5 kB]
+#5 6.160 Get:15 http://ports.ubuntu.com/ubuntu-ports jammy-security/main arm64 Packages [4208 kB]
+#5 6.417 Get:16 http://ports.ubuntu.com/ubuntu-ports jammy-security/restricted arm64 Packages [7930 kB]
+#5 6.940 Get:17 http://ports.ubuntu.com/ubuntu-ports jammy-security/multiverse arm64 Packages [63.4 kB]
+#5 6.941 Get:18 http://ports.ubuntu.com/ubuntu-ports jammy-security/universe arm64 Packages [1416 kB]
+#5 7.198 Fetched 48.2 MB in 7s (6799 kB/s)
+#5 7.198 Reading package lists...
+#5 7.779 Reading package lists...
+#5 8.354 Building dependency tree...
+#5 8.522 Reading state information...
+#5 8.663 procps is already the newest version (2:3.3.17-6ubuntu2.1).
+#5 8.663 The following additional packages will be installed:
+#5 8.663   libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0 libxtables12 openssl
+#5 8.663 Suggested packages:
+#5 8.663   iproute2-doc
+#5 8.663 Recommended packages:
+#5 8.663   libatm1 libpam-cap
+#5 8.696 The following NEW packages will be installed:
+#5 8.696   ca-certificates iproute2 libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0
+#5 8.696   libxtables12 openssl tzdata
+#5 9.204 0 upgraded, 11 newly installed, 0 to remove and 1 not upgraded.
+#5 9.204 Need to get 3057 kB of archives.
+#5 9.204 After this operation, 10.3 MB of additional disk space will be used.
+#5 9.204 Get:1 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 openssl arm64 3.0.2-0ubuntu1.30 [1160 kB]
+#5 11.10 Get:2 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 ca-certificates all 20260601~22.04.1 [141 kB]
+#5 11.10 Get:3 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 libelf1 arm64 0.186-1ubuntu0.1 [50.8 kB]
+#5 11.10 Get:4 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 libbpf0 arm64 1:0.5.0-1ubuntu22.04.1 [140 kB]
+#5 11.14 Get:5 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 libmd0 arm64 1.0.4-1build1 [23.8 kB]
+#5 11.15 Get:6 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 libbsd0 arm64 0.11.5-1 [43.7 kB]
+#5 11.15 Get:7 http://ports.ubuntu.com/ubuntu-ports jammy/main arm64 libmnl0 arm64 1.0.4-3build2 [12.9 kB]
+#5 11.15 Get:8 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 libxtables12 arm64 1.8.7-1ubuntu5.2 [30.9 kB]
+#5 11.15 Get:9 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 libcap2-bin arm64 1:2.44-1ubuntu0.22.04.3 [25.5 kB]
+#5 11.15 Get:10 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 iproute2 arm64 5.15.0-1ubuntu2.2 [1083 kB]
+#5 11.39 Get:11 http://ports.ubuntu.com/ubuntu-ports jammy-updates/main arm64 tzdata all 2026c-0ubuntu0.22.04.1 [346 kB]
+#5 11.50 debconf: delaying package configuration, since apt-utils is not installed
+#5 11.51 Fetched 3057 kB in 3s (1117 kB/s)
+#5 11.52 Selecting previously unselected package openssl.
+#5 11.52 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4387 files and directories currently installed.)
+#5 11.52 Preparing to unpack .../00-openssl_3.0.2-0ubuntu1.30_arm64.deb ...
+#5 11.52 Unpacking openssl (3.0.2-0ubuntu1.30) ...
+#5 11.54 Selecting previously unselected package ca-certificates.
+#5 11.54 Preparing to unpack .../01-ca-certificates_20260601~22.04.1_all.deb ...
+#5 11.54 Unpacking ca-certificates (20260601~22.04.1) ...
+#5 11.56 Selecting previously unselected package libelf1:arm64.
+#5 11.56 Preparing to unpack .../02-libelf1_0.186-1ubuntu0.1_arm64.deb ...
+#5 11.56 Unpacking libelf1:arm64 (0.186-1ubuntu0.1) ...
+#5 11.57 Selecting previously unselected package libbpf0:arm64.
+#5 11.57 Preparing to unpack .../03-libbpf0_1%3a0.5.0-1ubuntu22.04.1_arm64.deb ...
+#5 11.57 Unpacking libbpf0:arm64 (1:0.5.0-1ubuntu22.04.1) ...
+#5 11.58 Selecting previously unselected package libmd0:arm64.
+#5 11.58 Preparing to unpack .../04-libmd0_1.0.4-1build1_arm64.deb ...
+#5 11.58 Unpacking libmd0:arm64 (1.0.4-1build1) ...
+#5 11.59 Selecting previously unselected package libbsd0:arm64.
+#5 11.59 Preparing to unpack .../05-libbsd0_0.11.5-1_arm64.deb ...
+#5 11.59 Unpacking libbsd0:arm64 (0.11.5-1) ...
+#5 11.60 Selecting previously unselected package libmnl0:arm64.
+#5 11.60 Preparing to unpack .../06-libmnl0_1.0.4-3build2_arm64.deb ...
+#5 11.60 Unpacking libmnl0:arm64 (1.0.4-3build2) ...
+#5 11.61 Selecting previously unselected package libxtables12:arm64.
+#5 11.61 Preparing to unpack .../07-libxtables12_1.8.7-1ubuntu5.2_arm64.deb ...
+#5 11.61 Unpacking libxtables12:arm64 (1.8.7-1ubuntu5.2) ...
+#5 11.62 Selecting previously unselected package libcap2-bin.
+#5 11.62 Preparing to unpack .../08-libcap2-bin_1%3a2.44-1ubuntu0.22.04.3_arm64.deb ...
+#5 11.62 Unpacking libcap2-bin (1:2.44-1ubuntu0.22.04.3) ...
+#5 11.63 Selecting previously unselected package iproute2.
+#5 11.63 Preparing to unpack .../09-iproute2_5.15.0-1ubuntu2.2_arm64.deb ...
+#5 11.63 Unpacking iproute2 (5.15.0-1ubuntu2.2) ...
+#5 11.65 Selecting previously unselected package tzdata.
+#5 11.65 Preparing to unpack .../10-tzdata_2026c-0ubuntu0.22.04.1_all.deb ...
+#5 11.65 Unpacking tzdata (2026c-0ubuntu0.22.04.1) ...
+#5 11.74 Setting up tzdata (2026c-0ubuntu0.22.04.1) ...
+#5 11.77 
+#5 11.77 Current default time zone: 'Etc/UTC'
+#5 11.77 Local time is now:      Fri Oct  2 05:46:53 UTC 2026.
+#5 11.77 Universal Time is now:  Fri Oct  2 05:46:53 UTC 2026.
+#5 11.77 Run 'dpkg-reconfigure tzdata' if you wish to change it.
+#5 11.77 
+#5 11.77 Setting up libcap2-bin (1:2.44-1ubuntu0.22.04.3) ...
+#5 11.78 Setting up libmnl0:arm64 (1.0.4-3build2) ...
+#5 11.78 Setting up libxtables12:arm64 (1.8.7-1ubuntu5.2) ...
+#5 11.78 Setting up libmd0:arm64 (1.0.4-1build1) ...
+#5 11.78 Setting up openssl (3.0.2-0ubuntu1.30) ...
+#5 11.79 Setting up libbsd0:arm64 (0.11.5-1) ...
+#5 11.79 Setting up libelf1:arm64 (0.186-1ubuntu0.1) ...
+#5 11.79 Setting up ca-certificates (20260601~22.04.1) ...
+#5 11.92 Updating certificates in /etc/ssl/certs...
+#5 12.07 121 added, 0 removed; done.
+#5 12.08 Setting up libbpf0:arm64 (1:0.5.0-1ubuntu22.04.1) ...
+#5 12.08 Setting up iproute2 (5.15.0-1ubuntu2.2) ...
+#5 12.12 Processing triggers for libc-bin (2.35-0ubuntu3.15) ...
+#5 12.13 Processing triggers for ca-certificates (20260601~22.04.1) ...
+#5 12.13 Updating certificates in /etc/ssl/certs...
+#5 12.25 0 added, 0 removed; done.
+#5 12.25 Running hooks in /etc/ca-certificates/update.d...
+#5 12.25 done.
+#5 DONE 12.3s
+
+#6 exporting to image
+#6 exporting layers
+#6 exporting layers 0.2s done
+#6 exporting manifest sha256:6acaa8354772d282df4ec1916b8e8be1ac6ae5fed0509c6e376a0abbaa651146 done
+#6 exporting config sha256:a6732b68f4a047844f9daa46214ea21a7f303e3721a88971f791f790d04e341c done
+#6 exporting attestation manifest sha256:9fc30020e81ec6dc4c8f00aa7f6f0af1cd430b7fcaec2cc846e8afc7f1818b95 done
+#6 exporting manifest list sha256:9e8c5b3ea170c581b88e1fd9e2c027d81eb081335ff7e5bf0cb4234f196b5441 done
+#6 naming to docker.io/library/b4-2-lab:22.04 done
+#6 unpacking to docker.io/library/b4-2-lab:22.04 0.1s done
+#6 DONE 0.4s

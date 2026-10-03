@@ -1,0 +1,125 @@
+2026-10-02T05:48:16Z
+$ ps -fp 560,563,566
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 R+    0.0  1632 -                                agent-leak-app-
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+2026-10-02T05:48:21Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  1 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    1.0  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.8 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:26Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.5  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.5 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:31Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.3  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.6 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:36Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.2  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.5 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:42Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.1  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.7 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:47Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.1  1584 do_wait                          agent-leak-app-
+  596   596 SN+   0.8 16848 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-02T05:48:52Z
+$ ps -fp 560,563,566,596
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        560     7  0 14:48 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501        563   560  0 14:48 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501        566   563  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501        596   566  0 14:48 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 560,563,566,596 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  560   560 Ss    0.0  1468 do_sys_poll                      script
+  563   563 Ss+   0.0  1400 do_wait                          sh
+  566   566 S+    0.1  1584 do_wait                          agent-leak-app-
+  596   596 RN+   0.8 16848 -                                agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          

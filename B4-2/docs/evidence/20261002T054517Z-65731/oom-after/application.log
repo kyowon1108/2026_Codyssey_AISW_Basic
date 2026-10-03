@@ -1,0 +1,35 @@
+>>> Starting Agent Boot Sequence...
+[1/6] Checking User Account               [OK]
+   ... Running as service user '501' (uid=501)
+[2/6] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/6] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/6] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/6] Verifying Log Permission            [OK]
+   ... Log directory is writable: /work/docs/evidence/20261002T054517Z-65731/oom-after/app-logs
+[6/6] Verifying Mission Environment       [OK]
+   ... MEMORY_LIMIT=100MB, CPU_MAX_OCCUPY=100%, MULTI_THREAD_ENABLE=False
+------------------------------------------------------------
+All Boot Checks Passed!
+Agent READY
+2026-10-02 14:45:23,365 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+2026-10-02 14:45:23,365 [INFO] Agent listening at port 15034
+
+==================================================
+ [ Agent Initiate ] Resource Check 
+==================================================
+ [ MEMORY ] Limit: 100MB 		[ WARNING: Recommend Over 256MB ]
+ [ CPU    ] Limit: 100%  		[ WARNING: Recommend Under 50% ]
+ [ THREAD ] Concurrency: False 		[ OK ]
+--------------------------------------------------
+ >>> SYSTEM STATUS: STABLE. STARTING WORKLOAD MONITORING...
+==================================================
+
+2026-10-02 14:45:25,380 [INFO] [MemoryWorker] Current Heap: 25MB
+2026-10-02 14:45:28,401 [INFO] [MemoryWorker] Current Heap: 50MB
+2026-10-02 14:45:31,423 [INFO] [MemoryWorker] Current Heap: 75MB
+2026-10-02 14:45:34,443 [INFO] [MemoryWorker] Current Heap: 100MB
+2026-10-02 14:45:34,444 [CRITICAL] [MemoryGuard] Memory limit exceeded (100MB >= 100MB) / (Recommend Over 256MB)
+2026-10-02 14:45:34,444 [CRITICAL] [MemoryGuard] Self-terminating process 181 to prevent system instability.

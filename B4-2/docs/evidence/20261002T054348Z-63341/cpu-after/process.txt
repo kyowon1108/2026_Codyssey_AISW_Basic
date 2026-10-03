@@ -1,0 +1,9 @@
+2026-10-02T05:43:52Z
+$ ps -fp 143
+UID        PID  PPID  C STIME TTY          TIME CMD
+501        143     7  0 14:43 ?        00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 143 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+  143   143 R     0.0  1608 -                                agent-leak-app-
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess

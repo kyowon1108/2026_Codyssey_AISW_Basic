@@ -1,0 +1,24 @@
+2026-10-02 14:52:46,946 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+2026-10-02 14:52:46,946 [INFO] Agent listening at port 15034
+2026-10-02 14:52:48,957 [INFO] >>> Scenario Selected: [Healthy System Monitoring]
+2026-10-02 14:52:48,959 [INFO] [Scheduler] Task Scheduler Initialized.
+2026-10-02 14:52:48,959 [INFO] [Scheduler] Registered Tasks: ['Thread-A', 'Thread-B', 'Thread-C']
+2026-10-02 14:52:48,960 [INFO] [Scheduler] Starting task execution...
+2026-10-02 14:52:48,960 [INFO] [Thread-A] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,013 [INFO] [Thread-A] Calculating... (40%)
+2026-10-02 14:52:49,066 [INFO] [Thread-A] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,125 [INFO] [Thread-B] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,177 [INFO] [Thread-B] Calculating... (40%)
+2026-10-02 14:52:49,230 [INFO] [Thread-B] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,283 [INFO] [Thread-C] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,335 [INFO] [Thread-C] Calculating... (40%)
+2026-10-02 14:52:49,387 [INFO] [Thread-C] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,439 [INFO] [Thread-A] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,493 [INFO] [Thread-A] Calculating... (80%)
+2026-10-02 14:52:49,545 [INFO] [Thread-A] Preempted. Progress saved at (80%)
+2026-10-02 14:52:49,596 [INFO] [Thread-B] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,649 [INFO] [Thread-B] Calculating... (80%)
+2026-10-02 14:52:49,703 [INFO] [Thread-B] Preempted. Progress saved at (80%)
+2026-10-02 14:52:49,763 [INFO] [Thread-C] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,815 [INFO] [Thread-C] Calculating... (80%)
+2026-10-02 14:52:49,866 [INFO] [Thread-C] Preempted. Progress saved at (80%)

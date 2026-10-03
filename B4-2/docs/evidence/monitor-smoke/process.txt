@@ -1,0 +1,9 @@
+2026-10-02T05:42:31Z
+$ ps -fp 8
+UID        PID  PPID  C STIME TTY          TIME CMD
+1000         8     1  0 14:42 ?        00:00:00 sleep 4
+$ ps -L -p 8 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+    8     8 S     0.0  1092 hrtimer_nanosleep                sleep
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess

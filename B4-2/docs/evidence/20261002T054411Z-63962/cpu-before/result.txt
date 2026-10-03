@@ -1,0 +1,3 @@
+pid=428
+started_utc=2026-10-02T05:44:29Z
+command=/work/agent-app/agent-leak-app-arm64

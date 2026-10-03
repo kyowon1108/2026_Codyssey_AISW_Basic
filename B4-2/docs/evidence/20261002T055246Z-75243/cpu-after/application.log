@@ -1,0 +1,56 @@
+>>> Starting Agent Boot Sequence...
+[1/6] Checking User Account               [OK]
+   ... Running as service user '501' (uid=501)
+[2/6] Verifying Environment Variables     [OK]
+   ... All required Envs correct
+[3/6] Checking Required Files             [OK]
+   ... Verified 'secret.key' with correct key string.
+[4/6] Checking Port Availability          [OK]
+   ... Port 15034 is available.
+[5/6] Verifying Log Permission            [OK]
+   ... Log directory is writable: /work/docs/evidence/20261002T055246Z-75243/cpu-after/app-logs
+[6/6] Verifying Mission Environment       [OK]
+   ... MEMORY_LIMIT=512MB, CPU_MAX_OCCUPY=10%, MULTI_THREAD_ENABLE=False
+------------------------------------------------------------
+All Boot Checks Passed!
+Agent READY
+2026-10-02 14:52:46,946 [INFO] [SafetyGuard] Process priority lowered (nice=10).
+2026-10-02 14:52:46,946 [INFO] Agent listening at port 15034
+
+==================================================
+ [ Agent Initiate ] Resource Check 
+==================================================
+ [ MEMORY ] Limit: 512MB 		[ OK ]
+ [ CPU    ] Limit: 10%  		[ OK ]
+ [ THREAD ] Concurrency: False 		[ OK ]
+--------------------------------------------------
+ >>> SYSTEM STATUS: STABLE. STARTING WORKLOAD MONITORING...
+==================================================
+
+2026-10-02 14:52:48,957 [INFO] >>> Scenario Selected: [Healthy System Monitoring]
+
+>>> [SYSTEM] ALL CONFIGURATIONS OPTIMAL. RUNNING STABILITY TEST... <<<
+
+2026-10-02 14:52:48,959 [INFO] [Scheduler] Task Scheduler Initialized.
+2026-10-02 14:52:48,959 [INFO] [Scheduler] Registered Tasks: ['Thread-A', 'Thread-B', 'Thread-C']
+2026-10-02 14:52:48,960 [INFO] [Scheduler] Starting task execution...
+2026-10-02 14:52:48,960 [INFO] [Thread-A] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,013 [INFO] [Thread-A] Calculating... (40%)
+2026-10-02 14:52:49,066 [INFO] [Thread-A] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,125 [INFO] [Thread-B] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,177 [INFO] [Thread-B] Calculating... (40%)
+2026-10-02 14:52:49,230 [INFO] [Thread-B] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,283 [INFO] [Thread-C] Task Started. Calculating... (20%)
+2026-10-02 14:52:49,335 [INFO] [Thread-C] Calculating... (40%)
+2026-10-02 14:52:49,387 [INFO] [Thread-C] Preempted. Progress saved at (40%)
+2026-10-02 14:52:49,439 [INFO] [Thread-A] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,493 [INFO] [Thread-A] Calculating... (80%)
+2026-10-02 14:52:49,545 [INFO] [Thread-A] Preempted. Progress saved at (80%)
+2026-10-02 14:52:49,596 [INFO] [Thread-B] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,649 [INFO] [Thread-B] Calculating... (80%)
+2026-10-02 14:52:49,703 [INFO] [Thread-B] Preempted. Progress saved at (80%)
+2026-10-02 14:52:49,763 [INFO] [Thread-C] Resumed. Calculating... (60%)
+2026-10-02 14:52:49,815 [INFO] [Thread-C] Calculating... (80%)
+2026-10-02 14:52:49,866 [INFO] [Thread-C] Preempted. Progress saved at (80%)
+
+Session terminated, killing shell... ...killed.

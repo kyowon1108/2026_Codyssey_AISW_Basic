@@ -1,0 +1,22 @@
+2026-10-02T05:47:57Z
+uid=501 gid=20(dialout) groups=20(dialout)
+Linux 2a6e34c22688 6.12.54-linuxkit #1 SMP Tue Nov  4 21:21:47 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+VERSION="22.04.5 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=jammy
+2edd8eb1b6ae40ac611afe880b864f0399ff0977bfd72d9d0fd98aa41ca6d1ff  /work/agent-app/agent-leak-app-arm64
+f9b83fa7ebd41c2520c10aa66ab5883fd43160865c4cff046ccb35c55f7b422e  /work/scripts/experiment.sh
+5e49273591b3c3b04dfcbacfe0ae0a459d6e821a30e91377612bc0d464b39057  /work/scripts/monitor.sh
+0826629f02bb41b97704fafc658d3cee7e680e3dc0764a6249103afea5e2e0d8  /work/scripts/run.sh
+max_case_seconds=45
+100000 100000
+805306368

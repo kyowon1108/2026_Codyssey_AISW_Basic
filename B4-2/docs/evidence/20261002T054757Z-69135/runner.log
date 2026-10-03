@@ -1,0 +1,74 @@
+Launching oom-before
+pid=23
+started_utc=2026-10-02T05:47:57Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=6
+termination=application_exit
+exit_code=137
+samples=5
+first_rss_kib=4480
+last_rss_kib=46820
+peak_rss_kib=46820
+peak_cpu_one_core_percent=5.08
+Launching oom-after
+pid=197
+started_utc=2026-10-02T05:48:04Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=12
+termination=application_exit
+exit_code=137
+samples=11
+first_rss_kib=4496
+last_rss_kib=98044
+peak_rss_kib=98044
+peak_cpu_one_core_percent=5.93
+Launching cpu-before
+pid=560
+started_utc=2026-10-02T05:48:16Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=37
+termination=application_exit
+exit_code=143
+samples=36
+first_rss_kib=4500
+last_rss_kib=21300
+peak_rss_kib=21300
+peak_cpu_one_core_percent=5.88
+Launching cpu-after
+pid=1695
+started_utc=2026-10-02T05:48:53Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=45
+termination=experiment_timeout
+exit_code=0
+samples=46
+first_rss_kib=4500
+last_rss_kib=1468
+peak_rss_kib=379952
+peak_cpu_one_core_percent=5.88
+Launching deadlock-before
+scripts/experiment.sh: line 87:  3121 Killed                  setsid script -q -e -c "$APP_BIN" /dev/null > "$out/application.log" 2>&1
+pid=3121
+started_utc=2026-10-02T05:49:41Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=45
+termination=experiment_timeout
+exit_code=137
+samples=46
+first_rss_kib=4496
+last_rss_kib=1468
+peak_rss_kib=21352
+peak_cpu_one_core_percent=5.98
+Launching deadlock-after
+pid=4547
+started_utc=2026-10-02T05:50:29Z
+command=/work/agent-app/agent-leak-app-arm64
+observed_seconds=45
+termination=experiment_timeout
+exit_code=0
+samples=46
+first_rss_kib=4476
+last_rss_kib=1468
+peak_rss_kib=379940
+peak_cpu_one_core_percent=5.08
+scripts/experiment.sh: line 96: syntax error near unexpected token `)'

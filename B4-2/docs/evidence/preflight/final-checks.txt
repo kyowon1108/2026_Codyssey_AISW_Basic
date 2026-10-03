@@ -1,0 +1,9 @@
+bash_syntax=PASS
+shellcheck=PASS
+document_links=PASS
+evidence_verification=PASS
+cleanup_rerun=PASS (20261002T055246Z-75243, runner exit 0)
+script_code_lines=experiment:96 monitor:61 run:41 verify:38
+responsibilities=launch; experiment lifecycle; process-tree sampling; evidence verification
+comparison_runner=6 results saved; trailing syntax error during live edit, independently verified
+cpu_os_spike=UNCONFIRMED; app watchdog=CONFIRMED
