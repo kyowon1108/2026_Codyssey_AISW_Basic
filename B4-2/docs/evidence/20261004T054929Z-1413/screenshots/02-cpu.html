@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><title>B4-2 CPU / CPU_MAX_OCCUPY comparison</title><style>
+  *{box-sizing:border-box}body{margin:0;padding:28px;background:#f4f5f7;color:#18202b;font:14px system-ui}header{margin-bottom:18px}h1{margin:0 0 8px;font-size:25px}p{margin:5px 0}a{color:#22539b;margin-right:16px}main{display:grid;grid-template-columns:1fr 1fr;gap:18px}main.env{display:block}section{background:white;border:1px solid #cdd4dc;padding:12px;margin-bottom:12px;border-radius:5px}h2{font-size:12px;margin:0 0 9px;color:#3c5069;overflow-wrap:anywhere}h2.case{font-size:18px}pre{font:12px/1.5 ui-monospace,Menlo,monospace;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.note{background:#fff2c9;padding:12px}.env pre{font-size:14px}</style>
+  </head><body><header><h1>CPU / CPU_MAX_OCCUPY comparison</h1><p>Actual Docker output excerpts | run: 20261004T054929Z-1413</p><p>Source: B4-2/docs/evidence/20261004T054929Z-1413/ · CSV: UTC · application timestamps: KST</p><nav><a href="/?case=environment">environment</a><a href="/?case=oom">oom</a><a href="/?case=cpu">cpu</a><a href="/?case=deadlock">deadlock</a></nav><p class="note">Application Current Load and OS CPU measurements are different. This capture does not establish OS CPU saturation.</p></header><main class=""><article><h2 class="case">cpu-before</h2><section><h2>cpu-before/config.txt + result.txt</h2><pre>CPU_MAX_OCCUPY=100
+MEMORY_LIMIT=512
+MULTI_THREAD_ENABLE=false
+pid=564
+started_utc=2026-10-04T05:49:47Z
+command=/work/agent-app/agent-leak-app-arm64
+observation_end_utc=2026-10-04T05:50:18Z
+observed_seconds=31
+termination=application_exit
+exit_code=143
+samples=30
+first_rss_kib=4424
+last_rss_kib=21172
+peak_rss_kib=21172
+peak_cpu_one_core_percent=5.04
+</pre></section><section><h2>cpu-before/application.log — matching raw lines</h2><pre>2026-10-04 14:49:49,790 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-04 14:49:52,913 [INFO] [CpuWorker] Current Load: 13.23%
+2026-10-04 14:49:56,031 [INFO] [CpuWorker] Current Load: 18.07%
+2026-10-04 14:49:59,150 [INFO] [CpuWorker] Current Load: 21.97%
+2026-10-04 14:50:02,259 [INFO] [CpuWorker] Current Load: 23.82%
+2026-10-04 14:50:05,379 [INFO] [CpuWorker] Current Load: 30.70%
+2026-10-04 14:50:08,503 [INFO] [CpuWorker] Current Load: 38.52%
+2026-10-04 14:50:11,625 [INFO] [CpuWorker] Current Load: 45.33%
+2026-10-04 14:50:14,736 [INFO] [CpuWorker] Current Load: 48.71%
+2026-10-04 14:50:17,845 [INFO] [CpuWorker] Current Load: 50.86%
+2026-10-04 14:50:17,948 [CRITICAL] [CpuWorker] CPU Threshold Violated! (50.86%).
+&gt;&gt;&gt; [SYSTEM] WATCHDOG: INITIATING EMERGENCY ABORT (SIGTERM) &lt;&lt;&lt;</pre></section><section><h2>cpu-before/monitor.csv — raw samples</h2><pre>utc,pid,state,cpu_one_core_percent,cpu_lifetime_percent,rss_sum_kib,threads,app_log_bytes
+2026-10-04T05:49:47Z,564,S,0,0,4424,3,0
+2026-10-04T05:49:48Z,564,S,5.04,6,21108,4,1358
+2026-10-04T05:49:49Z,564,S,0.00,3,21172,4,1499
+2026-10-04T05:50:15Z,564,S,4.90,1,21172,4,2019
+2026-10-04T05:50:16Z,564,S,0.00,1,21172,4,2019
+2026-10-04T05:50:17Z,564,S,0.00,1,21172,4,2019
+2026-10-04T05:50:18Z,564,EXIT,0,0,0,0,0</pre></section><section><h2>cpu-before/top-threads.txt — final top -b -H -n 1 -p sample</h2><pre>top - 14:50:08 up 1 min,  0 users,  load average: 1.79, 0.73, 0.27
+Threads:   4 total,   0 running,   4 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  2.2 ni, 97.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :   7836.5 total,   4269.5 free,   2210.2 used,   1356.8 buff/cache
+MiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   5258.5 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+  600 501       30  10   23168  16796   8468 S  26.7   0.2   0:00.17 agent-lea+
+  564 501       20   0    2248   1444   1348 S   0.0   0.0   0:00.00 script
+  566 501       20   0    2332   1384   1292 S   0.0   0.0   0:00.00 sh
+  569 501       20   0    2600   1548   1340 S   0.0   0.0   0:00.04 agent-lea+
+</pre></section></article><article><h2 class="case">cpu-after</h2><section><h2>cpu-after/config.txt + result.txt</h2><pre>CPU_MAX_OCCUPY=10
+MEMORY_LIMIT=512
+MULTI_THREAD_ENABLE=false
+pid=1507
+started_utc=2026-10-04T05:50:18Z
+command=/work/agent-app/agent-leak-app-arm64
+observation_end_utc=2026-10-04T05:51:18Z
+observed_seconds=60
+termination=experiment_timeout
+exit_code=0
+samples=58
+first_rss_kib=4432
+last_rss_kib=507860
+peak_rss_kib=507860
+peak_cpu_one_core_percent=5.08
+</pre></section><section><h2>cpu-after/application.log — matching raw lines</h2><pre>2026-10-04 14:50:57,948 [INFO] [MemoryWorker] Current Heap: 325MB
+2026-10-04 14:50:59,154 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-04 14:51:00,975 [INFO] [MemoryWorker] Current Heap: 350MB
+2026-10-04 14:51:02,269 [INFO] [CpuWorker] Current Load: 10.00%
+2026-10-04 14:51:04,008 [INFO] [MemoryWorker] Current Heap: 375MB
+2026-10-04 14:51:05,401 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-04 14:51:07,035 [INFO] [MemoryWorker] Current Heap: 400MB
+2026-10-04 14:51:08,523 [INFO] [CpuWorker] Current Load: 8.42%
+2026-10-04 14:51:10,062 [INFO] [MemoryWorker] Current Heap: 425MB
+2026-10-04 14:51:11,638 [INFO] [CpuWorker] Current Load: 10.00%
+2026-10-04 14:51:13,089 [INFO] [MemoryWorker] Current Heap: 450MB
+2026-10-04 14:51:14,760 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-04 14:51:16,111 [INFO] [MemoryWorker] Current Heap: 475MB
+2026-10-04 14:51:17,881 [INFO] [CpuWorker] Current Load: 6.40%</pre></section><section><h2>cpu-after/monitor.csv — raw samples</h2><pre>utc,pid,state,cpu_one_core_percent,cpu_lifetime_percent,rss_sum_kib,threads,app_log_bytes
+2026-10-04T05:50:18Z,1507,S,0,0,4432,3,0
+2026-10-04T05:50:19Z,1507,S,5.08,6,21116,4,1329
+2026-10-04T05:50:21Z,1507,S,0.97,3.5,21116,4,1936
+2026-10-04T05:51:14Z,1507,S,0.97,0.5,482256,6,6164
+2026-10-04T05:51:15Z,1507,S,0.00,0.5,482256,6,6164
+2026-10-04T05:51:16Z,1507,S,0.97,0.5,507860,6,6231
+2026-10-04T05:51:18Z,1507,S,0.00,0.5,507860,6,6295</pre></section><section><h2>cpu-after/top-threads.txt — final top -b -H -n 1 -p sample</h2><pre>top - 14:51:10 up 2 min,  0 users,  load average: 2.11, 1.01, 0.40
+Threads:   6 total,   0 running,   6 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.5 us,  0.0 sy,  0.0 ni, 99.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :   7836.5 total,   3947.5 free,   2530.7 used,   1358.3 buff/cache
+MiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   4937.7 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 1507 501       20   0    2248   1444   1348 S   0.0   0.0   0:00.00 script
+ 1509 501       20   0    2332   1380   1292 S   0.0   0.0   0:00.00 sh
+ 1512 501       20   0    2600   1560   1352 S   0.0   0.0   0:00.05 agent-lea+
+ 1543 501       30  10  606020 452268   8520 S   0.0   5.6   0:00.03 agent-lea+
+ 1605 501       30  10  606020 452268   8520 S   0.0   5.6   0:00.11 agent-lea+
+ 1606 501       30  10  606020 452268   8520 S   0.0   5.6   0:00.13 agent-lea+
+</pre></section></article></main></body><div id="codex-agent-overlay-root" data-codex-agent-overlay-root="true"></div></html>

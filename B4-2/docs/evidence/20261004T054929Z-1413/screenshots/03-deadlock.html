@@ -1,0 +1,100 @@
+<!doctype html><html><head><meta charset="utf-8"><title>B4-2 Deadlock / MULTI_THREAD_ENABLE comparison</title><style>
+  *{box-sizing:border-box}body{margin:0;padding:28px;background:#f4f5f7;color:#18202b;font:14px system-ui}header{margin-bottom:18px}h1{margin:0 0 8px;font-size:25px}p{margin:5px 0}a{color:#22539b;margin-right:16px}main{display:grid;grid-template-columns:1fr 1fr;gap:18px}main.env{display:block}section{background:white;border:1px solid #cdd4dc;padding:12px;margin-bottom:12px;border-radius:5px}h2{font-size:12px;margin:0 0 9px;color:#3c5069;overflow-wrap:anywhere}h2.case{font-size:18px}pre{font:12px/1.5 ui-monospace,Menlo,monospace;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.note{background:#fff2c9;padding:12px}.env pre{font-size:14px}</style>
+  </head><body><header><h1>Deadlock / MULTI_THREAD_ENABLE comparison</h1><p>Actual Docker output excerpts | run: 20261004T054929Z-1413</p><p>Source: B4-2/docs/evidence/20261004T054929Z-1413/ · CSV: UTC · application timestamps: KST</p><nav><a href="/?case=environment">environment</a><a href="/?case=oom">oom</a><a href="/?case=cpu">cpu</a><a href="/?case=deadlock">deadlock</a></nav></header><main class=""><article><h2 class="case">deadlock-before</h2><section><h2>deadlock-before/config.txt + result.txt</h2><pre>CPU_MAX_OCCUPY=10
+MEMORY_LIMIT=512
+MULTI_THREAD_ENABLE=true
+pid=3327
+started_utc=2026-10-04T05:51:20Z
+command=/work/agent-app/agent-leak-app-arm64
+observation_end_utc=2026-10-04T05:52:20Z
+observed_seconds=60
+termination=experiment_timeout
+exit_code=0
+samples=59
+first_rss_kib=4428
+last_rss_kib=21232
+peak_rss_kib=21232
+peak_cpu_one_core_percent=5.04
+</pre></section><section><h2>deadlock-before/application.log — matching raw lines</h2><pre>2026-10-04 14:51:27,439 [INFO] [AgentWorker][Worker-Thread-1] LOCK ACQUIRED: [Shared_Memory_A]. (Holding...)
+2026-10-04 14:51:27,439 [INFO] [AgentWorker][Worker-Thread-2] LOCK ACQUIRED: [Socket_Pool_B]. (Holding...)
+2026-10-04 14:51:29,456 [INFO] [AgentWorker][Worker-Thread-1] Need resource [Socket_Pool_B] to finish job.
+2026-10-04 14:51:29,456 [INFO] [AgentWorker][Worker-Thread-1] WAITING for [Socket_Pool_B]... (Status: BLOCKED)
+2026-10-04 14:51:29,457 [INFO] [AgentWorker][Worker-Thread-2] Need resource [Shared_Memory_A] to write logs.
+2026-10-04 14:51:29,457 [INFO] [AgentWorker][Worker-Thread-2] WAITING for [Shared_Memory_A]... (Status: BLOCKED)</pre></section><section><h2>deadlock-before/monitor.csv — raw samples</h2><pre>utc,pid,state,cpu_one_core_percent,cpu_lifetime_percent,rss_sum_kib,threads,app_log_bytes
+2026-10-04T05:52:15Z,3327,S,0.00,0,21232,6,2726
+2026-10-04T05:52:16Z,3327,S,0.00,0,21232,6,2726
+2026-10-04T05:52:17Z,3327,S,0.00,0,21232,6,2726
+2026-10-04T05:52:18Z,3327,S,0.00,0,21232,6,2726
+2026-10-04T05:52:19Z,3327,S,0.00,0,21232,6,2726
+2026-10-04T05:52:20Z,3327,S,0.00,0,21232,6,2726</pre></section><section><h2>deadlock-before/process.txt — final ps / thread sample</h2><pre> 3363  3554 SNl+  0.0 16852 futex_wait_queue                 agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:52:17Z
+$ ps -fp 3327,3329,3330,3363
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       3327     7  0 14:51 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       3329  3327  0 14:51 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       3330  3329  0 14:51 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       3363  3330  0 14:51 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 3327,3329,3330,3363 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 3327  3327 Ss    0.0  1448 do_sys_poll                      script
+ 3329  3329 Ss+   0.0  1368 do_wait                          sh
+ 3330  3330 S+    0.0  1564 do_wait                          agent-leak-app-
+ 3363  3363 SNl+  0.0 16852 futex_wait_queue                 agent-leak-app-
+ 3363  3553 SNl+  0.0 16852 futex_wait_queue                 agent-leak-app-
+ 3363  3554 SNl+  0.0 16852 futex_wait_queue                 agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*</pre></section></article><article><h2 class="case">deadlock-after</h2><section><h2>deadlock-after/config.txt + result.txt</h2><pre>CPU_MAX_OCCUPY=10
+MEMORY_LIMIT=512
+MULTI_THREAD_ENABLE=false
+pid=5177
+started_utc=2026-10-04T05:52:22Z
+command=/work/agent-app/agent-leak-app-arm64
+observation_end_utc=2026-10-04T05:53:22Z
+observed_seconds=60
+termination=experiment_timeout
+exit_code=0
+samples=58
+first_rss_kib=4436
+last_rss_kib=507852
+peak_rss_kib=507852
+peak_cpu_one_core_percent=4.24
+</pre></section><section><h2>deadlock-after/application.log — matching raw lines</h2><pre>2026-10-04 14:52:25,717 [INFO] [Scheduler] All tasks completed.
+2026-10-04 14:53:11,036 [INFO] [MemoryWorker] Current Heap: 400MB
+2026-10-04 14:53:12,585 [INFO] [CpuWorker] Current Load: 5.13%
+2026-10-04 14:53:14,062 [INFO] [MemoryWorker] Current Heap: 425MB
+2026-10-04 14:53:15,708 [INFO] [CpuWorker] Current Load: 5.00%
+2026-10-04 14:53:17,085 [INFO] [MemoryWorker] Current Heap: 450MB
+2026-10-04 14:53:18,836 [INFO] [CpuWorker] Current Load: 7.11%
+2026-10-04 14:53:20,095 [INFO] [MemoryWorker] Current Heap: 475MB
+2026-10-04 14:53:21,964 [INFO] [CpuWorker] Current Load: 8.06%</pre></section><section><h2>deadlock-after/monitor.csv — raw samples</h2><pre>utc,pid,state,cpu_one_core_percent,cpu_lifetime_percent,rss_sum_kib,threads,app_log_bytes
+2026-10-04T05:53:17Z,5177,S,0.00,0.5,456644,6,5852
+2026-10-04T05:53:18Z,5177,S,0.00,0.5,482248,6,5919
+2026-10-04T05:53:19Z,5177,S,0.98,0.5,482248,6,5983
+2026-10-04T05:53:20Z,5177,S,0.97,0.5,507852,6,6050
+2026-10-04T05:53:21Z,5177,S,0.00,0.5,507852,6,6050
+2026-10-04T05:53:22Z,5177,S,0.97,0.5,507852,6,6114</pre></section><section><h2>deadlock-after/process.txt — final ps / thread sample</h2><pre> 5213  5276 SNl+  0.2 452256 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:53:20Z
+$ ps -fp 5177,5179,5182,5213
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       5177     7  0 14:52 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       5179  5177  0 14:52 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       5182  5179  0 14:52 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       5213  5182  0 14:52 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 5177,5179,5182,5213 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 5177  5177 Ss    0.0  1448 do_sys_poll                      script
+ 5179  5179 Ss+   0.0  1380 do_wait                          sh
+ 5182  5182 S+    0.0  1560 do_wait                          agent-leak-app-
+ 5213  5213 SNl+  0.0 503464 futex_wait_queue                agent-leak-app-
+ 5213  5275 SNl+  0.1 503464 do_select                       agent-leak-app-
+ 5213  5276 SNl+  0.2 503464 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*</pre></section></article></main></body><div id="codex-agent-overlay-root" data-codex-agent-overlay-root="true"></div></html>

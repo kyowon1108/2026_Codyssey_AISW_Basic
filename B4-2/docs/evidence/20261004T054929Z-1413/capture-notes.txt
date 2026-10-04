@@ -1,0 +1,15 @@
+Capture date: 2026-10-04 KST
+Docker experiment runner exit code: 0
+Evidence verification exit code: 0
+Syntax checks and ShellCheck exit code: 0
+Capture method: Chrome full-page browser screenshots of read-only raw Docker output excerpts.
+No generated terminal image or fabricated measurements are used.
+Source run: 20261004T054929Z-1413
+Screenshots: 00-environment.jpg, 01-oom.jpg, 02-cpu.jpg, 03-deadlock.jpg
+Matching static HTML snapshots are preserved beside the screenshots.
+CPU limitation: application load 50.86%; interval OS CPU before maximum 5.04%, after 5.08%.
+The final top first-frame sample shows 26.7% on application PID 600; it does not prove threshold violation.
+Deadlock before application PID: 3363; PTY root PID: 3327.
+Raw CSV timestamps are UTC. Application log timestamps are KST.
+Timeout cleanup occurs after monitoring ends and is recorded separately in harness.log.
+Each script owns one responsibility: launch, experiment lifecycle, sampling, verification, or evidence display.

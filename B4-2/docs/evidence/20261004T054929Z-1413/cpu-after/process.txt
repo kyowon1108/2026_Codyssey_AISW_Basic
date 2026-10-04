@@ -1,0 +1,211 @@
+2026-10-04T05:50:18Z
+$ ps -fp 1507,1509,1512
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 R+    0.0  1608 -                                agent-leak-app-
+$ ss -ltn
+State Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+2026-10-04T05:50:24Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  1 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    1.0  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.6 42604 futex_wait_queue                 agent-leak-app-
+ 1543  1605 SNl+  0.0 42604 do_select                        agent-leak-app-
+ 1543  1606 SNl+  0.0 42604 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:29Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.5  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.3 93812 futex_wait_queue                 agent-leak-app-
+ 1543  1605 SNl+  0.0 93812 do_select                        agent-leak-app-
+ 1543  1606 SNl+  0.2 93812 do_select                        agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:34Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.3  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.2 145020 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.1 145020 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 145020 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:39Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.2  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.1 170624 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.1 170624 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 170624 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:44Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.1  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.1 221832 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.1 221832 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 221832 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:49Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.1  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 273040 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.2 273040 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 273040 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:50:55Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.1  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 324248 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.2 324248 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 324248 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:51:00Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.1  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 349852 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.1 349852 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 349852 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:51:05Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.1  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 401060 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.2 401060 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 401060 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:51:10Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.0  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 452268 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.2 452268 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 452268 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          
+2026-10-04T05:51:15Z
+$ ps -fp 1507,1509,1512,1543
+UID        PID  PPID  C STIME TTY          TIME CMD
+501       1507     7  0 14:50 ?        00:00:00 script -q -e -c /work/agent-app/agent-leak-app-arm64 /dev/null
+501       1509  1507  0 14:50 pts/0    00:00:00 sh -c /work/agent-app/agent-leak-app-arm64
+501       1512  1509  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+501       1543  1512  0 14:50 pts/0    00:00:00 /work/agent-app/agent-leak-app-arm64
+$ ps -L -p 1507,1509,1512,1543 -o pid,tid,stat,pcpu,rss,wchan:32,comm
+  PID   TID STAT %CPU   RSS WCHAN                            COMMAND
+ 1507  1507 Ss    0.0  1444 do_sys_poll                      script
+ 1509  1509 Ss+   0.0  1380 do_wait                          sh
+ 1512  1512 S+    0.0  1560 do_wait                          agent-leak-app-
+ 1543  1543 SNl+  0.0 477872 futex_wait_queue                agent-leak-app-
+ 1543  1605 SNl+  0.2 477872 do_select                       agent-leak-app-
+ 1543  1606 SNl+  0.2 477872 do_select                       agent-leak-app-
+$ ss -ltn
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1            0.0.0.0:15034      0.0.0.0:*          

@@ -1,0 +1,12 @@
+pid=1507
+started_utc=2026-10-04T05:50:18Z
+command=/work/agent-app/agent-leak-app-arm64
+observation_end_utc=2026-10-04T05:51:18Z
+observed_seconds=60
+termination=experiment_timeout
+exit_code=0
+samples=58
+first_rss_kib=4432
+last_rss_kib=507860
+peak_rss_kib=507860
+peak_cpu_one_core_percent=5.08

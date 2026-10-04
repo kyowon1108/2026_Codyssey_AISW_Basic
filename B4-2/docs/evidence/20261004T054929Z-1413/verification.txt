@@ -1,0 +1,5 @@
+PASS: six runs have boot, metrics, process/thread evidence; cgroup memory.events unchanged
+PASS: MemoryGuard shutdown; lifetime 6 -> 12 seconds
+PASS: CPU watchdog shutdown; reduced cap survives observation window
+PASS: blocked process remains alive with stable final samples; single-thread tasks complete
+LIMITATION: application Current Load is not OS CPU usage; assess CPU spike separately in report

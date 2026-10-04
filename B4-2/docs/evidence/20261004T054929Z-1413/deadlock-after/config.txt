@@ -1,0 +1,8 @@
+AGENT_HOME=/work/runtime/20261004T054929Z-1413/deadlock-after
+AGENT_KEY_PATH=/work/runtime/20261004T054929Z-1413/deadlock-after/api_keys
+AGENT_LOG_DIR=/work/docs/evidence/20261004T054929Z-1413/deadlock-after/app-logs
+AGENT_PORT=15034
+AGENT_UPLOAD_DIR=/work/runtime/20261004T054929Z-1413/deadlock-after/upload_files
+CPU_MAX_OCCUPY=10
+MEMORY_LIMIT=512
+MULTI_THREAD_ENABLE=false

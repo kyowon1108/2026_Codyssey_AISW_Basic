@@ -1,0 +1,1 @@
+syntax_and_shellcheck_exit=0
