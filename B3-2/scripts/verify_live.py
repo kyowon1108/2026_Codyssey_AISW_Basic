@@ -17,6 +17,8 @@ from gitgen.git import git
 def main() -> None:
     """Keep API credentials in the environment and print only CLI results."""
     source = Path(__file__).resolve().parents[1] / "main.py"
+    max_tokens = os.environ.get("GITGEN_VERIFY_MAX_TOKENS", "4000")
+    print(f"model=gpt-5-mini max_tokens={max_tokens}", flush=True)
     with TemporaryDirectory(prefix="b3-2-live-") as folder:
         root = Path(folder)
         _ = git(["init", "-q"], root)
@@ -37,6 +39,8 @@ def main() -> None:
                     sys.executable,
                     str(source),
                     mode,
+                    "--max-tokens",
+                    max_tokens,
                     "--reason",
                     "입력 이름의 앞뒤 공백 제거",
                     "--requirements",
@@ -52,6 +56,7 @@ def main() -> None:
             print(f"=== LIVE {mode} / exit={result.returncode} ===")
             print(result.stdout)
             print(result.stderr)
+            print(f"stdout_characters={len(result.stdout)}")
             if result.returncode:
                 sys.exit(result.returncode)
         if git(["status", "--porcelain=v1"], root) != before:

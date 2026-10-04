@@ -16,6 +16,7 @@ Git 변경 사항을 수집해 REST AI API로 변경 요약과 커밋·PR 초안
 |---|---|
 | 환경 | Python 3.10 이상, Git, uv임 |
 | API 키 | `AI_API_KEY` 또는 `OPENAI_API_KEY`이며 전자를 우선함 |
+| 로컬 키 파일 | `.env`는 Git에서 제외하며 환경변수로 불러와 사용함 |
 | 기본 API | `https://copa.codyssey.kr/v1`임 |
 | 기본 모델 | `gpt-5-mini`임 |
 | 토큰 상한 | 기본 4000이며 `--max-tokens`로 지정함 |
@@ -29,6 +30,7 @@ Git 변경 사항을 수집해 REST AI API로 변경 요약과 커밋·PR 초안
 ```bash
 uv sync --project B3-2
 export AI_API_KEY="발급받은_API_키"
+# 저장한 로컬 키를 사용할 경우: set -a; source B3-2/.env; set +a
 B3-2/.venv/bin/python B3-2/main.py commit
 B3-2/.venv/bin/python B3-2/main.py pr --reason "이름 입력 공백 제거"
 ```
@@ -36,33 +38,37 @@ B3-2/.venv/bin/python B3-2/main.py pr --reason "이름 입력 공백 제거"
 ## 실제 커밋 출력
 
 임시 저장소의 `greeting.py` 변경으로 실제 API를 호출했으며 제목과 핵심 변경이 일치함을 확인함.
-다음은 생성 결과 발췌임.
+다음은 기존 실 API 원문을 Carbon 이미지로 옮긴 발췌이며 [텍스트 원문](docs/evidence/live-20261002-excerpts.txt)을 함께 보존함.
 
-```text
-greet: 타입 힌트 추가 및 이름 공백 제거
-- 변경 내용: greeting.py의 greet 함수 시그니처에 타입 힌트(name: str)와 반환 타입(-> str)을 추가하고, 반환 표현을 f-string으로 변경하여 name.strip()을 적용함.
-```
+![실 API 커밋 생성 결과 발췌](docs/evidence/02-commit.png)
 
 ## 실제 PR 출력
 
 PR의 Why·What·How to Test 형식을 확인함.
-아래는 실제 결과의 핵심 발췌이며 테스트 제안은 실행 성공 증빙과 구분함.
+아래는 2026-10-02 결과의 핵심 발췌이며 테스트 제안은 실행 성공 증빙과 구분함.
 
-```markdown
-greet 함수 타입 힌트 추가 및 입력 공백 제거
+![실 API PR 생성 결과 발췌](docs/evidence/03-pr.png)
 
-## Why
-- 입력 이름의 앞뒤 공백 제거 (제공된 이유: "입력 이름의 앞뒤 공백 제거")와 코드에 타입 힌트를 명시해야 한다는 요구를 반영했습니다.
+## CLI 입력 검증
 
-## What
-- 대상 파일: greeting.py
-- 변경 내용 요약:
-  - 함수 시그니처를 def greet(name: str) -> str로 수정하여 매개변수와 반환에 타입 힌트 추가
-  - 반환 구현을 문자열 연결에서 f-string으로 변경하고 name.strip()을 적용하여 입력 앞뒤 공백 제거 (return f"Hello {name.strip()}")
+2026-10-04 임시 Git 프로젝트에서 변경 없음은 종료 코드 0·API 호출 0회, 변경이 있으나 키가 없으면 종료 코드 2임을 확인함.
+[실행 원본](docs/evidence/cli-boundaries.txt)과 [테스트 41개 통과 로그](docs/evidence/tests.txt)를 보존함.
 
-## How to Test
-- from greeting import greet; assert greet(' Alice ') == 'Hello Alice'  # 앞뒤 공백이 제거되는지 확인
-```
+![변경 없음과 키 누락 검증](docs/evidence/01-cli-boundaries.png)
+
+## 옵션별 실 API 비교
+
+2026-10-04 같은 변경·모델에서 `--max-tokens` 2000과 4000으로 커밋·PR을 생성했으며 각각 정상 종료·API 1회·Git 상태 불변을 확인함.
+PR 본문은 525자와 798자로 관측했으나 토큰 상한이 항상 더 긴 출력을 보장하는 것은 아님.
+
+| 토큰 상한 | 실 실행 원본 |
+|---|---|
+| 2000 | [커밋·PR 결과](docs/evidence/live-20261004-2000.txt) |
+| 4000 | [커밋·PR 결과](docs/evidence/live-20261004-4000.txt) |
+
+## 제출 PR과 생성 결과
+
+[제출 PR #1](https://github.com/kyowon1108/2026_Codyssey_AISW_Basic/pull/1)의 본문은 Why·What·How to Test를 포함하며 본문과 위 도구의 실제 생성 결과를 구분함.
 
 ## 안전 모드와 한계
 

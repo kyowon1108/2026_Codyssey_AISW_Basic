@@ -1,0 +1,8 @@
+UTC=2026-10-04T04:07:33Z
+CASE=clean repository; keys unset
+[INFO] 변경 사항이 없습니다. API 호출: 0회
+exit_code=0
+
+CASE=untracked file; keys unset
+[ERROR] AI_API_KEY 또는 OPENAI_API_KEY 환경변수가 설정되지 않았습니다.
+exit_code=2
